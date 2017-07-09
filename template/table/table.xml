@@ -1,0 +1,54 @@
+declare
+ cnt integer;
+begin
+    select count(0)
+    into cnt  
+    from user_all_tables
+   where table_name = upper('${tableName}');
+   
+    if cnt = 0 then
+     execute immediate 'create table ${tableName}
+(
+[split id="field"]
+  ${field}                    ${type},
+[split/] 
+)';
+execute immediate 'comment on table ${tableName} is ''${tableComment}''';
+[split id="comment"]
+execute immediate 'comment on column ${tableName}.${field} is ''${comment}''';
+[split/]
+  end if;             
+end;
+/
+declare
+ cnt integer;
+begin
+    select count(0)
+    into cnt  
+    from user_constraints a
+   where a.constraint_name = upper('PK_${tableName}');
+        
+    if cnt = 0 then
+        execute immediate 'alter table ${tableName} add constraint PK_${tableName} primary key (${pk})';
+  end if;             
+end;
+/
+
+declare
+ cnt integer;
+begin
+    select count(0)
+    into cnt  
+    from user_sequences a
+   where a.sequence_name = upper('SEQ_${tableName}');
+   
+    if cnt = 0 then
+     execute immediate 'create sequence SEQ_${tableName}
+        minvalue 1
+        maxvalue 999999999999999999999999999
+        start with 1
+        increment by 1
+        cache 20';
+  end if;             
+end;
+/

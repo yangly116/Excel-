@@ -1,0 +1,127 @@
+<insert id="insertInterfaceData" parameterClass="java.util.Map">
+    	<selectKey keyProperty="ERP_INS_ID" resultClass="Integer">
+            select SEQ_ERPC_WST_PAY.NEXTVAL as ERP_INS_ID from DUAL 
+        </selectKey> 
+        INSERT INTO ERPC_WST_PAY (  
+            ERP_INS_ID 
+        <isNotNull property="ERP_INS_ID">,ERP_INS_ID</isNotNull>
+
+        <isNotNull property="PAYER_ID">,PAYER_ID</isNotNull>
+
+        <isNotNull property="PAYER_NO">,PAYER_NO</isNotNull>
+
+        <isNotNull property="PAY_DATE">,PAY_DATE</isNotNull>
+
+        <isNotNull property="ABSTRACT">,ABSTRACT</isNotNull>
+
+        <isNotNull property="TR_TYPE">,TR_TYPE</isNotNull>
+
+        <isNotNull property="AMOUNT">,AMOUNT</isNotNull>
+
+        <isNotNull property="CURRENCY">,CURRENCY</isNotNull>
+
+        <isNotNull property="RECE_ACC_NO">,RECE_ACC_NO</isNotNull>
+
+        <isNotNull property="RECE_ACC_NAME">,RECE_ACC_NAME</isNotNull>
+
+        <isNotNull property="REG_NO">,REG_NO</isNotNull>
+
+        <isNotNull property="RECE_OPBANK_NO">,RECE_OPBANK_NO</isNotNull>
+
+        <isNotNull property="RECE_OPBANK_NAME">,RECE_OPBANK_NAME</isNotNull>
+
+        <isNotNull property="RECE_CNAPS">,RECE_CNAPS</isNotNull>
+
+        <isNotNull property="URGENT_FLAG">,URGENT_FLAG</isNotNull>
+
+        <isNotNull property="PERSONALFLAG">,PERSONALFLAG</isNotNull>
+
+        <isNotNull property="CREATOR">,CREATOR</isNotNull>
+
+        <isNotNull property="CREATE_TIME">,CREATE_TIME</isNotNull>
+
+        <isNotNull property="TEXTVALUE1">,TEXTVALUE1</isNotNull>
+
+        <isNotNull property="TEXTVALUE2">,TEXTVALUE2</isNotNull>
+
+        <isNotNull property="TEXTVALUE3">,TEXTVALUE3</isNotNull>
+
+        <isNotNull property="TEXTVALUE4">,TEXTVALUE4</isNotNull>
+
+        <isNotNull property="TEXTVALUE5">,TEXTVALUE5</isNotNull>
+
+        <isNotNull property="NUMBERVALUE1">,NUMBERVALUE1</isNotNull>
+
+        <isNotNull property="NUMBERVALUE3">,NUMBERVALUE3</isNotNull>
+
+        <isNotNull property="DATEVALUE1">,DATEVALUE1</isNotNull>
+
+        <isNotNull property="DATEVALUE2">,DATEVALUE2</isNotNull>
+
+        <isNotNull property="DATEVALUE3">,DATEVALUE3</isNotNull>
+
+    <![CDATA[ 
+        ) VALUES ( 
+    ]]>  
+        #ERP_INS_ID# 
+
+        <${isNot} property="ERP_INS_ID">,#ERP_INS_ID#</${isNot}>
+
+        <${isNot} property="PAYER_ID">,#PAYER_ID#</${isNot}>
+
+        <${isNot} property="PAYER_NO">,#PAYER_NO#</${isNot}>
+
+        <${isNot} property="PAY_DATE">,#PAY_DATE#</${isNot}>
+
+        <${isNot} property="ABSTRACT">,#ABSTRACT#</${isNot}>
+
+        <${isNot} property="TR_TYPE">,#TR_TYPE#</${isNot}>
+
+        <${isNot} property="AMOUNT">,#AMOUNT#</${isNot}>
+
+        <${isNot} property="CURRENCY">,#CURRENCY#</${isNot}>
+
+        <${isNot} property="RECE_ACC_NO">,#RECE_ACC_NO#</${isNot}>
+
+        <${isNot} property="RECE_ACC_NAME">,#RECE_ACC_NAME#</${isNot}>
+
+        <${isNot} property="REG_NO">,#REG_NO#</${isNot}>
+
+        <${isNot} property="RECE_OPBANK_NO">,#RECE_OPBANK_NO#</${isNot}>
+
+        <${isNot} property="RECE_OPBANK_NAME">,#RECE_OPBANK_NAME#</${isNot}>
+
+        <${isNot} property="RECE_CNAPS">,#RECE_CNAPS#</${isNot}>
+
+        <${isNot} property="URGENT_FLAG">,#URGENT_FLAG#</${isNot}>
+
+        <${isNot} property="PERSONALFLAG">,#PERSONALFLAG#</${isNot}>
+
+        <${isNot} property="CREATOR">,#CREATOR#</${isNot}>
+
+        <${isNot} property="CREATE_TIME">,#CREATE_TIME#</${isNot}>
+
+        <${isNot} property="TEXTVALUE1">,#TEXTVALUE1#</${isNot}>
+
+        <${isNot} property="TEXTVALUE2">,#TEXTVALUE2#</${isNot}>
+
+        <${isNot} property="TEXTVALUE3">,#TEXTVALUE3#</${isNot}>
+
+        <${isNot} property="TEXTVALUE4">,#TEXTVALUE4#</${isNot}>
+
+        <${isNot} property="TEXTVALUE5">,#TEXTVALUE5#</${isNot}>
+
+        <${isNot} property="NUMBERVALUE1">,#NUMBERVALUE1#</${isNot}>
+
+        <${isNot} property="NUMBERVALUE3">,#NUMBERVALUE3#</${isNot}>
+
+        <${isNot} property="DATEVALUE1">,#DATEVALUE1#</${isNot}>
+
+        <${isNot} property="DATEVALUE2">,#DATEVALUE2#</${isNot}>
+
+        <${isNot} property="DATEVALUE3">,#DATEVALUE3#</${isNot}>
+
+    <![CDATA[ 
+        ) 
+    ]]>  
+</insert>

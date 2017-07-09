@@ -1,0 +1,19 @@
+<insert id="${id}" parameterClass="${parameterClass}">
+    	<selectKey keyProperty="${pk}" resultClass="Integer">
+            select ${seq}.NEXTVAL as ${pk} from DUAL 
+        </selectKey> 
+        INSERT INTO ${tableName} (  
+            ${pk} [split]
+        <${isNot} property="${property}">,${property}</${isNot}>
+[split]
+    <![CDATA[ 
+        ) VALUES ( 
+    ]]>  
+        #${pk}# 
+[split]
+        <${isNot} property="${property}">,#${property}#</${isNot}>
+[split]
+    <![CDATA[ 
+        ) 
+    ]]>  
+</insert>
