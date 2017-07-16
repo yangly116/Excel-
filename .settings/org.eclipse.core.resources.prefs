@@ -4,7 +4,6 @@ encoding//src/com/iceberg/buildFile/entity/Table.java=UTF-8
 encoding//src/com/iceberg/buildFile/enums/ParseKeyEnum.java=UTF-8
 encoding//src/com/iceberg/buildFile/main/ClearAll.java=UTF-8
 encoding//src/com/iceberg/buildFile/main/Setting.java=UTF-8
-encoding//src/com/iceberg/buildFile/main/StartMain.java=UTF-8
 encoding//src/com/iceberg/buildFile/server/AContextServer.java=UTF-8
 encoding//src/com/iceberg/buildFile/service/ParseFileServic.java=UTF-8
 encoding//src/com/iceberg/buildFile/service/impl/ParseFactoryServiceImpl.java=UTF-8

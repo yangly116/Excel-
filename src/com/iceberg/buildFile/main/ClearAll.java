@@ -11,7 +11,7 @@ import org.apache.commons.io.FileUtils;
  * @version 创建时间：Jul 7, 2017 12:05:19 AM  
  */
 public class ClearAll {
-	public static void main(String[] args) {
+	public static void test(String[] args) {
 		File file = new File(Setting.produceRoot);
 		try {
 			FileUtils.deleteDirectory(file);
