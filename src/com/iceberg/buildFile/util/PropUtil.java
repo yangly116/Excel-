@@ -10,11 +10,11 @@ import java.util.Properties;
  * @author 作者 E-mail:1164180794@qq.com 
  * @version 创建时间：2016年12月18日 下午3:35:16  
  */
-public class HtmlNodeUtil {
+public class PropUtil {
 	public static Properties properties;
 	static{
 		properties = new Properties();
-		File file = new File(HtmlNodeUtil.class.getResource("/htmlNode.properties").getFile());
+		File file = new File(PropUtil.class.getResource("/prop.properties").getFile());
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);
 			properties.load(fileInputStream);

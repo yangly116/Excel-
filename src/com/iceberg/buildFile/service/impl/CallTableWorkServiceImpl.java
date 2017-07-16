@@ -23,7 +23,7 @@ import com.iceberg.buildFile.service.BuildTableService;
 import com.iceberg.buildFile.service.CallWorkService;
 import com.iceberg.buildFile.service.ScanFileService;
 import com.iceberg.buildFile.util.BFileUtil;
-import com.iceberg.buildFile.util.HtmlNodeUtil;
+import com.iceberg.buildFile.util.PropUtil;
 import com.iceberg.buildFile.util.MatcherUtil;
 import com.iceberg.buildFile.util.ParmUtil;
 import com.iceberg.buildFile.util.StringUtil;
@@ -45,6 +45,9 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		List<Table> lTables = buildTableService.getLtables();
 		for (int i = 0; i < lTables.size(); i++) {
 			wirteTable(lTables.get(i));
+		}
+		if(lTables!=null&&lTables.size()!=0){
+			System.out.println("成功生成table文件！");
 		}
 	}
 	public ScanFileService getScanFileService() {
@@ -97,7 +100,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		}
 	}
 	private String replaceLine(String strLine,Table table){
-		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(HtmlNodeUtil.properties.getProperty("table"), ","));
+		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("table"), ","));
 		Map<String, String> map = getTableMap(table);
 		for (int i = 0; i < lRegexs.size(); i++) {
 			String regex = lRegexs.get(i);
@@ -115,7 +118,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	private String writeField(Table table,String tempLine){
 		Map<String, Field> fieldMap = table.getFieldMap();
 		StringBuilder builder = new StringBuilder();
-		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(HtmlNodeUtil.properties.getProperty("field"), ","));
+		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("field"), ","));
 		for (Map.Entry<String, Field> entry : fieldMap.entrySet()) {
 			String tempStr = new String(tempLine);
 			//String key =  entry.getKey();

@@ -50,6 +50,9 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 			writeValues4((String)ibatisMap.get("4"),table);
 			writeBy5((String)ibatisMap.get("5"));
 		}
+		if(lTables!=null&&lTables.size()!=0){
+			System.out.println("成功生成ibatis文件！");
+		}
 	}
 	/**
 	 * @Description:写入insert头部文本

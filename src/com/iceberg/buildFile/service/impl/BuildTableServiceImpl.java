@@ -37,17 +37,24 @@ public class BuildTableServiceImpl implements BuildTableService {
 		List<File> lFiles = new ArrayList<>();
 		try {
 			scanFileService.scanfFile(Setting.scanfFilePath, lFiles, ".xlsx");
+			for (int i = 0; i < lFiles.size(); i++) {
+				List<List<List<String>>> lListDatas = excelService.getExcelAllData(lFiles.get(i));
+				Map<String, Object> mapData = new HashMap<>();
+				mapData.put("lListDatas", lListDatas);
+				Table table = excelDataToTable(mapData);
+				lTables.add(table);
+			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		for (int i = 0; i < lFiles.size(); i++) {
-			List<List<List<String>>> lListDatas = excelService.getExcelAllData(lFiles.get(i));
-			Map<String, Object> mapData = new HashMap<>();
-			mapData.put("lListDatas", lListDatas);
-			Table table = excelDataToTable(mapData);
-			lTables.add(table);
+		}finally{
+			if(lTables.size()==0){
+				Setting.showMS="未扫描到Excel模板文件!";
+				System.out.println("本次扫描的目录为："+Setting.scanfFilePath);
+			}else{
+				Setting.showMS="本次扫描到 "+lTables.size()+" 个Excel模板文件!";
+			}
 		}
 		return lTables;
 	}
