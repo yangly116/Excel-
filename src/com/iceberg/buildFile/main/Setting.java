@@ -14,6 +14,8 @@ public class Setting {
 	public static String scanfFilePath = System.getProperty("user.dir")+File.separator+"template";
 	/**设置产品生成的根位置*/
 	public static String produceRoot = System.getProperty("user.dir")+File.separator+"produce";
+	
+	public static String config = System.getProperty("user.dir")+File.separator+"config";
 	/**展示信息*/
 	public static String showMS = "欢迎使用BDF";
 	private Setting() {//私有构造方法
