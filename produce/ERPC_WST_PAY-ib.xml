@@ -1,4 +1,4 @@
-<insert id="insertInterfaceData" parameterClass="java.util.Map">
+<insert id="insertERPC_WST_PAY" parameterClass="java.util.Map">
     	<selectKey keyProperty="ERP_INS_ID" resultClass="Integer">
             select SEQ_ERPC_WST_PAY.NEXTVAL as ERP_INS_ID from DUAL 
         </selectKey> 

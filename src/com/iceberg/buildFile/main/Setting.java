@@ -7,6 +7,10 @@ package com.iceberg.buildFile.main;
 public class Setting {
 	public static Setting init = new Setting();
 	public static String encoding = "gbk";
+	/**设置模板文件读取的位置*/
+	final public static String scanfFilePath = System.getProperty("user.dir")+"/template";
+	/**设置产品生成的根位置*/
+	final public static String produceRoot = System.getProperty("user.dir")+"/produce";
 	private Setting() {//私有构造方法
 	}
 	public static Setting getInit() {

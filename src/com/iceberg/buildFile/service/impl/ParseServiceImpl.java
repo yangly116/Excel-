@@ -1,4 +1,4 @@
-package com.iceberg.buildFile.parseFactory.impl;
+package com.iceberg.buildFile.service.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.stereotype.Service;
 
 import com.iceberg.buildFile.main.Setting;
-import com.iceberg.buildFile.parseFactory.ParseFile;
+import com.iceberg.buildFile.service.ParseFileServic;
 import com.iceberg.buildFile.util.StringUtil;
 
 /**
@@ -22,10 +23,10 @@ import com.iceberg.buildFile.util.StringUtil;
  * @since：Jul 8, 2017 9:37:14 AM
  * 
  */
-public class IbatisParseImpl implements ParseFile{
-
+@Service("ParseFileServic")
+public class ParseServiceImpl implements ParseFileServic{
 	@Override
-	public Map<String, Object> parseFile(File file) {
+	public Map<String, Object> parseIbatisFile(File file) {
 		String source = null;
 		Map<String, Object> map = new HashMap<>();
 		try {

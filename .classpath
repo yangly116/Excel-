@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="produceFile"/>
 	<classpathentry kind="src" path="resource"/>
-	<classpathentry kind="src" path="template"/>
 	<classpathentry kind="lib" path="lib/ezmorph.jar"/>
 	<classpathentry kind="lib" path="lib/gson-2.4.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.4.jar"/>

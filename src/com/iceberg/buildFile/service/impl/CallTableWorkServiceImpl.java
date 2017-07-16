@@ -1,6 +1,7 @@
-package com.iceberg.buildFile.workshop;
+package com.iceberg.buildFile.service.impl;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,13 +12,16 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.annotation.Resource;
+
 import org.apache.commons.io.FileUtils;
-import org.junit.Test;
 
 import com.iceberg.buildFile.entity.Field;
 import com.iceberg.buildFile.entity.Table;
-import com.iceberg.buildFile.myenum.ParseKeyEnum;
-import com.iceberg.buildFile.test.TestIbatisWork;
+import com.iceberg.buildFile.main.Setting;
+import com.iceberg.buildFile.service.BuildTableService;
+import com.iceberg.buildFile.service.CallWorkService;
+import com.iceberg.buildFile.service.ScanFileService;
 import com.iceberg.buildFile.util.BFileUtil;
 import com.iceberg.buildFile.util.HtmlNodeUtil;
 import com.iceberg.buildFile.util.MatcherUtil;
@@ -25,26 +29,33 @@ import com.iceberg.buildFile.util.ParmUtil;
 import com.iceberg.buildFile.util.StringUtil;
 
 /** 
- * 
+ * table调度
  * @author 作者：杨文培 
- * @version 创建时间：Jul 9, 2017 3:25:46 PM  
+ * @version 创建时间：Jul 15, 2017 8:41:21 PM  
  */
-public class TableMake extends BaseWork{
-	private Table table;
-	public TableMake() {
-		super();
-	}
+
+public class CallTableWorkServiceImpl implements CallWorkService{
+	@Resource
+	private ScanFileService scanFileService;
+	@Resource
+	private BuildTableService buildTableService;
+	private File outFile;
 	@Override
-	public void work(File sourceFile,File outFile) {
-		init(sourceFile, outFile);
-		Map<String, Object> mapData = getParseFile(ParseKeyEnum.table.getText());
-		Table table = excelDataToTable(mapData);
-		this.table = table;
-		wirteTable(table);
-		//System.out.println("table:"+table.toString());
+	public void callWork() {
+		List<Table> lTables = buildTableService.getLtables();
+		for (int i = 0; i < lTables.size(); i++) {
+			wirteTable(lTables.get(i));
+		}
+	}
+	public ScanFileService getScanFileService() {
+		return scanFileService;
+	}
+	public void setScanFileService(ScanFileService scanFileService) {
+		this.scanFileService = scanFileService;
 	}
 	private void wirteTable(Table table){
-		File templateFile = new File(TestIbatisWork.class.getResource("/table/table.xml").getFile());
+		File templateFile = new File(System.getProperty("user.dir")+"/template/table/table.xml");
+		this.outFile = new File(Setting.produceRoot+File.separator+table.getTableName()+".sql");
 		Stack<String> stack = new Stack<>();
 		StringBuilder builder = null;
 		BFileUtil.clearFile(outFile);//清空文件内容
@@ -184,11 +195,17 @@ public class TableMake extends BaseWork{
 		table.setTableComment(lStrings.get(4));
 		table.setSeq("SEQ_"+table.getTableName());
 	}
-	public Table getTable() {
-		return table;
+	public BuildTableService getBuildTableService() {
+		return buildTableService;
 	}
-	public void setTable(Table table) {
-		this.table = table;
+	public void setBuildTableService(BuildTableService buildTableService) {
+		this.buildTableService = buildTableService;
 	}
-	
+	public File getOutFile() {
+		return outFile;
+	}
+	public void setOutFile(File outFile) {
+		this.outFile = outFile;
+	}
+
 }

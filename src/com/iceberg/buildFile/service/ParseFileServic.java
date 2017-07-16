@@ -1,7 +1,9 @@
-package com.iceberg.buildFile.parseFactory;
+package com.iceberg.buildFile.service;
 
 import java.io.File;
 import java.util.Map;
+
+import com.iceberg.buildFile.entity.Table;
 
 
 /**
@@ -14,6 +16,6 @@ import java.util.Map;
  * @since：Jul 8, 2017 10:26:51 AM
  * 
  */
-public interface ParseFile {
-	public Map<String, Object> parseFile(File file);
+public interface ParseFileServic {
+	public Map<String, Object> parseIbatisFile(File file);
 }

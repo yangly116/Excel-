@@ -20,7 +20,7 @@ public class AContextServer {
 	}
 	public ApplicationContext getAppContext() {
 		if(appContext == null){
-			appContext = new ClassPathXmlApplicationContext(new String[] {"BF-applicationContext.xml"});
+			appContext = new ClassPathXmlApplicationContext(new String[] {"BDF-applicationContext.xml"});
 		}
 		return appContext;
 	}

@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.iceberg.buildFile.parseFactory.ParseFactory;
 import com.iceberg.buildFile.server.AContextServer;
+import com.iceberg.buildFile.service.impl.ParseFactoryServiceImpl;
 
 /**
  * <p>Title: </p>
@@ -44,7 +44,7 @@ public class TestApp {
 
 	@Test
 	public void test() {
-		ParseFactory parseFactory= (ParseFactory)aContextServer.getAppContext().getBean("BF.parseFactory");
+		ParseFactoryServiceImpl parseFactory= (ParseFactoryServiceImpl)aContextServer.getAppContext().getBean("BF.parseFactory");
 		Map<String, Object> authorsInfo = parseFactory.getMapFactoryImpl();
 		System.out.println("Article Author: ");
 		for (String key : authorsInfo.keySet()) {

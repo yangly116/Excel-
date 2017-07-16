@@ -19,17 +19,27 @@
 
     <context:component-scan base-package="com.iceberg.buildFile.service"></context:component-scan>
     
-    
-	<bean id="BF.parseFactory" class="com.iceberg.buildFile.parseFactory.ParseFactory">
-		<property name="mapFactoryImpl"> 
+	<bean id="BDF.startService" class="com.iceberg.buildFile.service.impl.StartServiceImpl">
+	    <!-- 执行指令列表 -->
+	    <property name="lCodes">  
+		    <list>  
+		        <value>101</value> 
+		        <value>201</value>  
+		    </list>  
+		</property> 
+	    <!-- 成产流水线映射 -->
+		<property name="mappingService"> 
 		<map>
-			<entry key="ib-insert" value-ref="BF.ibatisParseImpl" />
-			<entry key="table" value-ref="BF.tableParseImpl" />
+		    <!-- table生产流水线 -->
+			<entry key="101" value-ref="BDF.CallTableWorkServiceImpl" />
+			<!-- ibatis生产流水线 -->
+			<entry key="201" value-ref="BDF.callIbatisWorkServiceImpl" />
 		</map>
 		</property>
 	</bean>
-	<bean id="BF.ibatisParseImpl" class="com.iceberg.buildFile.parseFactory.impl.IbatisParseImpl">
+	<bean id="BDF.CallTableWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallTableWorkServiceImpl">
 	</bean>
-	<bean id="BF.tableParseImpl" class="com.iceberg.buildFile.parseFactory.impl.TableParseImpl">
+	<bean id="BDF.callIbatisWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallIbatisWorkServiceImpl">
 	</bean>
+	
 </beans>

@@ -53,4 +53,14 @@ public class StringUtil {
 		}
 		return "";
 	}
+	/**
+	 * 获取文件名后缀 例如: aa.txt  返回 .txt
+	 * @param fileName
+	 * @return
+	 */
+	public static String getFileNamePfix(String fileName){
+		int index = fileName.lastIndexOf(".");
+		String fixName = fileName.substring(index, fileName.length());
+		return fixName;
+	}
 }
