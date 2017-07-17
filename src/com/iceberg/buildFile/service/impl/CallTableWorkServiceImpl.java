@@ -124,7 +124,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 			//String key =  entry.getKey();
 			Field field = entry.getValue();
 			//System.out.println("field:"+field);
-			Map<String, String> map = getFieldMap(field);
+			Map<String, String> map = getFieldMap(field,table);
 			for(int i=0;i<lRegexs.size();i++){
 				String regex = lRegexs.get(i);
 				Pattern pattern = Pattern.compile(regex);
@@ -146,11 +146,12 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		map.put("${tableComment}", table.getTableComment());
 		return map;
 	}
-	private Map<String, String> getFieldMap(Field field){
+	private Map<String, String> getFieldMap(Field field,Table table){
 		Map<String, String> map = new HashMap<>();
 		map.put("${field}", field.getTab());
 		map.put("${type}", StringUtil.getFieldType(field.getType()));
 		map.put("${comment}", field.getComment());
+		map.put("${tableName}", table.getTableName());
 		return map;
 	}
 	/**
