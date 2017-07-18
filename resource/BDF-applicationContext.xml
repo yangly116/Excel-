@@ -22,16 +22,18 @@
 	    <!-- 执行指令列表 -->
 	    <property name="lCodes">  
 		    <list>  
+		    	<!-- table生产流水线 -->
 		        <value>101</value> 
+		        <!-- ibatis生产流水线 -->
 		        <value>201</value>  
 		    </list>  
 		</property> 
 	    <!-- 成产流水线映射 -->
 		<property name="mappingService"> 
 		<map>
-		    <!-- table生产流水线 -->
+			<!-- 生成可重复执行sql -->
 			<entry key="101" value-ref="BDF.CallTableWorkServiceImpl" />
-			<!-- ibatis生产流水线 -->
+			<!-- 生产ibatis插入语句 -->
 			<entry key="201" value-ref="BDF.callIbatisWorkServiceImpl" />
 		</map>
 		</property>
