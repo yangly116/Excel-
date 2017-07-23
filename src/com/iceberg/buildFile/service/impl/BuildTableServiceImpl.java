@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.iceberg.buildFile.entity.Field;
 import com.iceberg.buildFile.entity.Table;
+import com.iceberg.buildFile.enums.OpTypeTableEnum;
 import com.iceberg.buildFile.main.Setting;
 import com.iceberg.buildFile.service.BuildTableService;
 import com.iceberg.buildFile.service.ExcelService;
@@ -85,6 +86,9 @@ public class BuildTableServiceImpl implements BuildTableService {
 				}
 				field.setTab(lStrings.get(1));
 				field.setType(lStrings.get(2));
+				if(lStrings.size()>=4){
+					field.setIsNull(lStrings.get(3));
+				}
 				fieldMap.put(lStrings.get(1), field);
 			}
 		}
@@ -102,6 +106,7 @@ public class BuildTableServiceImpl implements BuildTableService {
 		table.setPk(lStrings.get(3));
 		table.setTableComment(lStrings.get(4));
 		table.setSeq("SEQ_"+table.getTableName());
+		table.setOpType(OpTypeTableEnum.getType(lStrings.get(5)).getText());
 	}
 	public ScanFileService getScanFileService() {
 		return scanFileService;

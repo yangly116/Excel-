@@ -13,7 +13,7 @@ import java.util.List;
 public interface ScanFileService {
 	public boolean scanfFile(String filePath,List<File> lFiles) throws FileNotFoundException,IOException;
 	/**
-	 * 根据文件后缀名获取文件列表
+	 * 根据文件包含后缀名为filePFix获取文件列表
 	 * @param filePath
 	 * @param lFiles
 	 * @param filePFix
@@ -22,4 +22,14 @@ public interface ScanFileService {
 	 * @throws IOException
 	 */
 	public boolean scanfFile(String filePath, List<File> lFiles,String filePFix) throws FileNotFoundException, IOException ;
+	/**
+	 * 不包含后缀名为filePFix
+	 * @param filePath
+	 * @param lFiles
+	 * @param filePFix
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	public boolean scanfFileNoPFix(String filePath, List<File> lFiles,String filePFix) throws FileNotFoundException, IOException ;
 }

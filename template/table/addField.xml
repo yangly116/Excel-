@@ -1,0 +1,21 @@
+--增加字段
+declare
+  cnt integer;
+begin
+	select count(0)
+      into cnt	
+	  from user_tab_columns a
+	  where a.Table_name = upper('${tableName}')
+	  and a.COLUMN_NAME in(
+[split id="isField"]
+	  upper('${field}'),
+[split/]
+);	   
+    if cnt = 0 then
+[split id="addField"]
+	   execute immediate 'ALTER TABLE ${tableName} ADD ${field} ${type} ${isNull}';
+       execute immediate 'comment on column ${tableName}.${field} is  ''${comment}''';
+[split/]
+	end if;
+end;
+/

@@ -23,6 +23,8 @@ public class Table {
 	private List<String> fields;
 	/**字段对象集合*/
 	private Map<String, Field> fieldMap;
+	/**操作类型*/
+	private String opType;
 	public String getTableName() {
 		return tableName;
 	}
@@ -64,6 +66,13 @@ public class Table {
 	}
 	public void setFieldMap(Map<String, Field> fieldMap) {
 		this.fieldMap = fieldMap;
+	}
+	
+	public String getOpType() {
+		return opType;
+	}
+	public void setOpType(String opType) {
+		this.opType = opType;
 	}
 	@Override
 	public String toString() {

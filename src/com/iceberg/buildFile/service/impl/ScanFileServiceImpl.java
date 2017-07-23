@@ -18,6 +18,9 @@ import com.iceberg.buildFile.util.StringUtil;
 @Service("ScanFileService")
 public class ScanFileServiceImpl implements ScanFileService {
 
+	/* (non-Javadoc)
+	 * @see com.iceberg.buildFile.service.ScanFileService#scanfFile(java.lang.String, java.util.List)
+	 */
 	@Override
 	public boolean scanfFile(String filePath, List<File> lFiles) throws FileNotFoundException, IOException {
 		try {
@@ -28,11 +31,11 @@ public class ScanFileServiceImpl implements ScanFileService {
             } else if (file.isDirectory()) {
                     String[] filelist = file.list();
                     for (int i = 0; i < filelist.length; i++) {
-                            File readfile = new File(filePath + "\\" + filelist[i]);
+                            File readfile = new File(filePath + File.separator + filelist[i]);
                             if (!readfile.isDirectory()) {
                                     lFiles.add(readfile);
                             } else if (readfile.isDirectory()) {
-                            	scanfFile(filePath + "\\" + filelist[i],lFiles);
+                            	scanfFile(filePath + File.separator + filelist[i],lFiles);
                             }
                     }
 
@@ -43,6 +46,9 @@ public class ScanFileServiceImpl implements ScanFileService {
     }
     return true;
 	}
+	/* (non-Javadoc)
+	 * @see com.iceberg.buildFile.service.ScanFileService#scanfFile(java.lang.String, java.util.List, java.lang.String)
+	 */
 	@Override
 	public boolean scanfFile(String filePath, List<File> lFiles,String filePFix) throws FileNotFoundException, IOException {
 		try {
@@ -52,13 +58,43 @@ public class ScanFileServiceImpl implements ScanFileService {
             } else if (file.isDirectory()) {
                     String[] filelist = file.list();
                     for (int i = 0; i < filelist.length; i++) {
-                            File readfile = new File(filePath + "\\" + filelist[i]);
+                            File readfile = new File(filePath + File.separator + filelist[i]);
                             if (!readfile.isDirectory()) {
 								if(filePFix.equals(StringUtil.getFileNamePfix(readfile.getName()))){
 									lFiles.add(readfile);
 								}
                             } else if (readfile.isDirectory()) {
-                            	scanfFile(filePath + "\\" + filelist[i],lFiles,filePFix);
+                            	scanfFile(filePath + File.separator + filelist[i],lFiles,filePFix);
+                            }
+                    }
+
+            }
+
+    } catch (FileNotFoundException e) {
+            System.out.println("readfile()   Exception:" + e.getMessage());
+    }
+    return true;
+	}
+	/* (non-Javadoc)
+	 * @see com.iceberg.buildFile.service.ScanFileService#scanfFileNoPFix(java.lang.String, java.util.List, java.lang.String)
+	 */
+	@Override
+	public boolean scanfFileNoPFix(String filePath, List<File> lFiles, String filePFix)
+			throws FileNotFoundException, IOException {
+		try {
+            File file = new File(filePath);
+            if (!file.isDirectory()) {
+                    lFiles.add(file);
+            } else if (file.isDirectory()) {
+                    String[] filelist = file.list();
+                    for (int i = 0; i < filelist.length; i++) {
+                            File readfile = new File(filePath + File.separator + filelist[i]);
+                            if (!readfile.isDirectory()) {
+								if(!filePFix.equals(StringUtil.getFileNamePfix(readfile.getName()))){
+									lFiles.add(readfile);
+								}
+                            } else if (readfile.isDirectory()) {
+                            	scanfFileNoPFix(filePath + File.separator + filelist[i],lFiles,filePFix);
                             }
                     }
 

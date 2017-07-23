@@ -1,28 +1,27 @@
 package com.iceberg.buildFile.main;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import com.iceberg.buildFile.server.AContextServer;
 import com.iceberg.buildFile.service.StartService;
-import com.iceberg.buildFile.util.PropUtil;
-
-import javax.swing.JLabel;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import java.awt.SystemColor;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
-
-import javax.swing.SwingConstants;
 
 /** 
  * 
@@ -37,39 +36,26 @@ public class MainWindow {
 	private JTextField produceText;
 	private JPanel panel;
 	private JLabel showMSLable;
+	private StartService startService = (StartService) AContextServer.aContextServer.getAppContext().getBean("BDF.startService");
+	private int res = -100;
 	
 	/**
 	 * 初始化
 	 */
 	private void init(){
+		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包 
+		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸 
+		int screenWidth = screenSize.width/2; // 获取屏幕的宽
+ 		int screenHeight = screenSize.height/2; // 获取屏幕的高
+ 		int height = frmBdf.getHeight(); int width = frmBdf.getWidth(); 
+ 		frmBdf.setLocation(screenWidth-width/2, screenHeight-height/2);
 		templateText.setText(Setting.scanfFilePath);
-		produceText.setText(Setting.produceRoot);
+		produceText.setText(Setting.scriptPath);
 		showMSLable.setText(Setting.showMS);
-		setPath();
 	}
 	private void setPath(){
-		alertPath();
-		String scanfFilePath = PropUtil.properties.getProperty("scanfFilePath");
-		String produceRoot = PropUtil.properties.getProperty("produceRoot");
-		if(!"".equals(scanfFilePath)){
-			//scanfFilePath.replaceAll("\\", "\\\\");
-			Setting.scanfFilePath = scanfFilePath;
-		}
-		if(!"".equals(produceRoot)){
-			Setting.produceRoot = produceRoot;
-		}
-	}
-	private void alertPath(){
-		PropUtil.properties.setProperty("scanfFilePath", templateText.getText());
-		PropUtil.properties.setProperty("produceRoot", produceText.getText());
-		File templateFile = new File(produceText.getText());
-		if(!templateFile.isDirectory()){
-			templateFile.mkdir();
-		}
-		File produceFile = new File(templateText.getText());
-		if(!produceFile.isDirectory()){
-			produceFile.mkdir();
-		}
+		Setting.setScriptPath(produceText.getText());
+		Setting.setScanfFilePath(templateText.getText());
 	}
 	/**
 	 * Launch the application.
@@ -100,8 +86,8 @@ public class MainWindow {
 	 */
 	private void initialize() {
 		frmBdf = new JFrame();
-		frmBdf.setTitle("BDF");
-		frmBdf.setBounds(100, 100, 504, 299);
+		frmBdf.setTitle("YWP-BDF-1.0");
+		frmBdf.setBounds(100, 100, 504, 281);
 		frmBdf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBdf.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -118,7 +104,7 @@ public class MainWindow {
 		});
 		templateText.setForeground(SystemColor.control);
 		templateText.setBackground(new Color(0, 0, 0));
-		templateText.setBounds(109, 61, 347, 33);
+		templateText.setBounds(97, 61, 359, 33);
 		panel.add(templateText);
 		templateText.setColumns(12);
 		
@@ -128,7 +114,7 @@ public class MainWindow {
 		lblNewLabel.setBounds(19, 60, 80, 33);
 		panel.add(lblNewLabel);
 		
-		JButton btnNewButton = new JButton("开 始");
+		JButton btnNewButton = new JButton("生成脚本");
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
@@ -136,28 +122,27 @@ public class MainWindow {
 			}
 		});
 		btnNewButton.setBackground(SystemColor.control);
-		btnNewButton.setFont(new Font("SimSun", Font.BOLD, 16));
+		btnNewButton.setFont(new Font("SimSun", Font.PLAIN, 14));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				setPath();
 				try{
-					StartService startService = (StartService) AContextServer.aContextServer.getAppContext().getBean("BDF.startService");
+					setPath();
 					startService.start();
 				}catch(Exception exception){
 					exception.printStackTrace();
 				}finally {
-					showMSLable.setText(Setting.showMS+"生成完毕！");
+					showMSLable.setText(Setting.showMS+" 生成完成！");
 				}
 			}
 		});
-		btnNewButton.setBounds(199, 193, 110, 33);
+		btnNewButton.setBounds(203, 193, 95, 27);
 		panel.add(btnNewButton);
 		
 		produceText = new JTextField();
 		produceText.setForeground(SystemColor.control);
 		produceText.setBackground(new Color(0, 0, 0));
 		produceText.setColumns(12);
-		produceText.setBounds(109, 127, 347, 33);
+		produceText.setBounds(97, 127, 359, 33);
 		panel.add(produceText);
 		
 		JLabel label_1 = new JLabel("生成路径：");
@@ -172,5 +157,59 @@ public class MainWindow {
 		showMSLable.setFont(new Font("SimSun", Font.PLAIN, 16));
 		showMSLable.setBounds(32, 10, 424, 33);
 		panel.add(showMSLable);
+		
+		JButton button = new JButton("清空脚本");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent arg0) {
+				try{
+					res = JOptionPane.showConfirmDialog(null, "确认清空生成目录？", "确认/取消", JOptionPane.YES_NO_OPTION); 
+					if(res == JOptionPane.YES_NO_OPTION){
+						showMSLable.setText("正在清空脚本...");
+						setPath();
+						startService.cleanScript();
+						showMSLable.setText("清空完成！");
+					}else{
+						showMSLable.setText("欢迎使用BDF！");
+					}
+				}catch(Exception exception){
+					exception.printStackTrace();
+				}finally {
+					res = -100;
+				}
+			}
+		});
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		button.setFont(new Font("SimSun", Font.PLAIN, 14));
+		button.setBackground(SystemColor.menu);
+		button.setBounds(89, 193, 95, 27);
+		panel.add(button);
+		
+		JButton button_1 = new JButton("刷新脚本");
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mousePressed(MouseEvent e) {
+				showMSLable.setText("正在刷新脚本...");
+			}
+		});
+		button_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try{
+					setPath();
+					startService.refreshScript();
+				}catch(Exception exception){
+					exception.printStackTrace();
+				}finally {
+					showMSLable.setText("刷新完成！");
+				}
+			}
+		});
+		button_1.setFont(new Font("SimSun", Font.PLAIN, 14));
+		button_1.setBackground(SystemColor.menu);
+		button_1.setBounds(326, 193, 95, 27);
+		panel.add(button_1);
 	}
 }

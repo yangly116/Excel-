@@ -6,5 +6,16 @@ package com.iceberg.buildFile.service;
  */
 
 public interface StartService {
+	/**
+	 * 生成脚本
+	 */
 	public void start();
+	/**
+	 * 清空脚本
+	 */
+	public void cleanScript();
+	/**
+	 * 刷新脚本
+	 */
+	public void refreshScript();
 }

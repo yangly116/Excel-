@@ -1,13 +1,8 @@
 package com.iceberg.buildFile.util;
 
-import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import org.junit.Test;
 
 /** 
  * 
@@ -15,6 +10,13 @@ import org.junit.Test;
  * @version 创建时间：Jul 6, 2017 10:17:46 PM  
  */
 public class StringUtil {
+	public static boolean isEmpty(String str){
+		boolean boo = false;
+		if(str == null || "".equals(str.trim())){
+			boo = true;
+		}
+		return boo;
+	}
 	public static List<String> splitToList(String string,String regex) {
 		if(string == null){
 			return new ArrayList<String>();
@@ -28,18 +30,21 @@ public class StringUtil {
 	}
 	public static String subFix(String str){
 		str = str.substring(0, str.length()-1);
-		return str;
+		return "	  "+str;
+	}
+	public static String replaSubFix(String str){
+		str = str.substring(0, str.length()-1);
+		return "	  "+str;
 	}
 	public static String getFieldType(String type){
+		if(type == null){
+			return "";
+		}
 		String first = type.substring(0,1);
 		String pfix = "";
 		if(type.length()>1){
 			pfix = type.substring(1,type.length());
 		}
-		Map<String, String> map = new HashMap<>();
-		map.put("D", "DATE");
-		map.put("C", "NVARCHAR2");
-		map.put("N", "NUMBER");
 		if("D".equals(first)){
 			return "DATE";
 		}else if("C".equals(first)){
@@ -50,8 +55,25 @@ public class StringUtil {
 			}else{
 				return "NUMBER"+"("+pfix.replace(".", ",")+")";
 			}
+		}else if("I".equals(first)){
+			return "INTEGER";
 		}
 		return "";
+	}
+	public static String getFieldIsNull(String type){
+		if(isEmpty(type)){
+			return "NOT NULL";
+		}
+		String first = type.substring(0,1);
+		String pfix = "";
+		if(type.length()>1){
+			pfix = type.substring(1,type.length());
+		}
+		if("Y".equals(first)){
+			return "";
+		}else{
+			return "NOT NULL";
+		}
 	}
 	/**
 	 * 获取文件名后缀 例如: aa.txt  返回 .txt

@@ -1,14 +1,15 @@
 eclipse.preferences.version=1
 encoding//src/com/iceberg/buildFile/entity/Ibatis.java=UTF-8
 encoding//src/com/iceberg/buildFile/entity/Table.java=UTF-8
+encoding//src/com/iceberg/buildFile/enums/OpTypeTableEnum.java=UTF-8
 encoding//src/com/iceberg/buildFile/enums/ParseKeyEnum.java=UTF-8
-encoding//src/com/iceberg/buildFile/main/ClearAll.java=UTF-8
 encoding//src/com/iceberg/buildFile/main/Setting.java=UTF-8
 encoding//src/com/iceberg/buildFile/server/AContextServer.java=UTF-8
 encoding//src/com/iceberg/buildFile/service/ParseFileServic.java=UTF-8
 encoding//src/com/iceberg/buildFile/service/impl/ParseFactoryServiceImpl.java=UTF-8
 encoding//src/com/iceberg/buildFile/service/impl/ParseServiceImpl.java=UTF-8
+encoding//src/com/iceberg/buildFile/test/BTest.java=UTF-8
 encoding//src/com/iceberg/buildFile/util/BFileUtil.java=UTF-8
 encoding//src/com/iceberg/buildFile/util/ParmUtil.java=UTF-8
 encoding//src/com/iceberg/buildFile/util/StringUtil.java=UTF-8
-encoding/produce=gbk
+encoding/out=gbk

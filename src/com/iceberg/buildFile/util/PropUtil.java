@@ -17,7 +17,7 @@ public class PropUtil {
 	static{
 		properties = new Properties();
 		String filePath = Setting.config+File.separator+"prop.properties";
-		System.out.println("propPath:"+filePath);
+		//System.out.println("propPath:"+filePath);
 		File file = new File(filePath);
 		try {
 			FileInputStream fileInputStream = new FileInputStream(file);

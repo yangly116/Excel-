@@ -32,12 +32,12 @@ import com.iceberg.buildFile.util.ParmUtil;
 import com.iceberg.buildFile.util.StringUtil;
 
 /** 
- * table调度
+ * 新增字段
  * @author 作者：杨文培 
  * @version 创建时间：Jul 15, 2017 8:41:21 PM  
  */
 
-public class CallTableWorkServiceImpl implements CallWorkService{
+public class CallNewFieldWorkServiceImpl implements CallWorkService{
 	@Resource
 	private CreatFileService creatFileService;
 	@Resource
@@ -47,16 +47,16 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	@Resource
 	private BuildPatchService buildPatchService;
 	private File outFile;
-	private String pFix = ".sql";
+	private String pFix = "-field"+".sql";
 	@Override
 	public void callWork() {
 		List<Table> lTables = buildTableService.getLtables();
 		for (int i = 0; i < lTables.size(); i++) {
 			Table table = lTables.get(i);
-			if(OpTypeTableEnum.NEW_TABLE_1.getText().equals(table.getOpType())){
+			if(OpTypeTableEnum.NEW_FIELD_2.getText().equals(table.getOpType())){
 				creatFileService.createOutFileDirectory(table.getOpType());//创建脚本文件
 				wirteTable(table);
-				buildPatchService.buildPatch("@table"+File.separator+table.getTableName()+pFix+";\r\n");
+				buildPatchService.buildPatch("@field"+File.separator+table.getTableName()+pFix+";\r\n");
 			}
 		}
 		if(lTables!=null&&lTables.size()!=0){
@@ -70,8 +70,8 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		this.scanFileService = scanFileService;
 	}
 	private void wirteTable(Table table){
-		File templateFile = new File(System.getProperty("user.dir")+"/template/table/table.xml");
-		this.outFile = new File(Setting.scriptPath+File.separator+"table"+File.separator+table.getTableName()+pFix);
+		File templateFile = new File(System.getProperty("user.dir")+"/template/table/addField.xml");
+		this.outFile = new File(Setting.scriptPath+File.separator+"field"+File.separator+table.getTableName()+"-field"+".sql");
 		Stack<String> stack = new Stack<>();
 		StringBuilder builder = null;
 		BFileUtil.clearFile(outFile);//清空文件内容
@@ -86,7 +86,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 					builder = new StringBuilder();
 				}else{
 					if(top == null){
-						replaceLine(strLine, table);
+						replaceLine(strLine, table);//替换非循环行数
 					}
 				}
 				if (top != null && builder != null) {
@@ -96,10 +96,10 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 				}
 				if (MatcherUtil.isEnd(strLine)) {// 判断结束标签
 					stack.pop();
-					if("field".equals(top)||"comment".equals(top)){
+					if("isField".equals(top)||"addField".equals(top)){
 						String strLineBf = writeField(table,builder.toString());
-						if("field".equals(top)){
-							strLineBf=StringUtil.subFix(strLineBf.trim());
+						if("isField".equals(top)){
+							strLineBf=StringUtil.replaSubFix(strLineBf.trim());
 						}
 						BFileUtil.write(outFile, strLineBf+"\r\n");
 					}
@@ -113,7 +113,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		}
 	}
 	private String replaceLine(String strLine,Table table){
-		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("table"), ","));
+		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("addField"), ","));
 		Map<String, String> map = getTableMap(table);
 		for (int i = 0; i < lRegexs.size(); i++) {
 			String regex = lRegexs.get(i);
@@ -129,7 +129,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		return strLine;
 	}
 	private String writeField(Table table,String tempLine){
-		Map<String, Field> fieldMap = table.getFieldMap();
+		Map<String, Field> fieldMap = table.getFieldMap();//有序map
 		StringBuilder builder = new StringBuilder();
 		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("field"), ","));
 		for (Map.Entry<String, Field> entry : fieldMap.entrySet()) {
@@ -155,8 +155,6 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	private Map<String, String> getTableMap(Table table){
 		Map<String, String> map = new HashMap<>();
 		map.put("${tableName}", table.getTableName());
-		map.put("${pk}", table.getPk());
-		map.put("${tableComment}", table.getTableComment());
 		return map;
 	}
 	private Map<String, String> getFieldMap(Field field,Table table){

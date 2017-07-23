@@ -12,6 +12,7 @@ import com.iceberg.buildFile.entity.Table;
 import com.iceberg.buildFile.main.Setting;
 import com.iceberg.buildFile.service.BuildTableService;
 import com.iceberg.buildFile.service.CallWorkService;
+import com.iceberg.buildFile.service.CreatFileService;
 import com.iceberg.buildFile.service.ParseFileServic;
 import com.iceberg.buildFile.util.BFileUtil;
 import com.iceberg.buildFile.util.ParmUtil;
@@ -27,6 +28,8 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 	private Ibatis ibatis = new Ibatis();
 	private File outFile;
 	@Resource
+	private CreatFileService creatFileService;
+	@Resource
 	private BuildTableService buildTableService;
 	@Resource
 	private ParseFileServic parseFileServic;
@@ -40,7 +43,8 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 		List<Table> lTables = buildTableService.getLtables();
 		for (int i = 0; i < lTables.size(); i++) {
 			Table table = lTables.get(i);
-			this.outFile = new File(Setting.produceRoot+File.separator+table.getTableName()+"-ib.xml");
+			creatFileService.createOutFileDirectory(table.getOpType());//创建脚本文件
+			this.outFile = new File(Setting.scriptPath+File.separator+table.getTableName()+"-ib.xml");
 			BFileUtil.clearFile(outFile);//清空文件内容
 			File templateFile = new File(System.getProperty("user.dir")+"/template/ibatis/ibatis.xml");
 			Map<String, Object> ibatisMap = parseFileServic.parseIbatisFile(templateFile);
@@ -102,8 +106,13 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 		Map<String, Field> fieldMap = table.getFieldMap();
 		for (Map.Entry<String, Field> entry : fieldMap.entrySet()) {
 			Field field = entry.getValue();
-			String fieldStr = field.getTab();
-			String successStr = ParmUtil.replaceparm(source, fieldStr, "property");
+			//String fieldStr = field.getTab();
+			List<String> ltargs = new ArrayList<>();
+			List<String> lparms = new ArrayList<>();
+			lparms.add("isNot"); ltargs.add(ibatis.getIsNot());
+			lparms.add("property"); ltargs.add(field.getTab());
+			String successStr = ParmUtil.replaceparm(source, ltargs, lparms);//替换参数
+			//String successStr = ParmUtil.replaceparm(source, fieldStr, "property");
 			BFileUtil.write(outFile, successStr);
 		}
 	}
