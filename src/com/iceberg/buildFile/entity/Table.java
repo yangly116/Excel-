@@ -1,5 +1,7 @@
 package com.iceberg.buildFile.entity;
 
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -14,7 +16,7 @@ public class Table {
 	/**表描述*/
 	private String tableComment;
 	/**主键*/
-	private String pk;
+	private List<String> lPks = new ArrayList<>();
 	/**外键*/
 	private Set<String> fks;
 	/**序列*/
@@ -31,11 +33,12 @@ public class Table {
 	public void setTableName(String tableName) {
 		this.tableName = tableName;
 	}
-	public String getPk() {
-		return pk;
+
+	public List<String> getlPks() {
+		return lPks;
 	}
-	public void setPk(String pk) {
-		this.pk = pk;
+	public void setlPks(List<String> lPks) {
+		this.lPks = lPks;
 	}
 	public Set<String> getFks() {
 		return fks;
@@ -76,8 +79,8 @@ public class Table {
 	}
 	@Override
 	public String toString() {
-		return "Table [tableName=" + tableName + ", tableComment=" + tableComment + ", pk=" + pk + ", fks=" + fks
-				+ ", seq=" + seq + ", fields=" + fields + ", fieldMap=" + fieldMap + "]";
+		return "Table [tableName=" + tableName + ", tableComment=" + tableComment + ", lPks=" + lPks + ", fks=" + fks
+				+ ", seq=" + seq + ", fields=" + fields + ", fieldMap=" + fieldMap + ", opType=" + opType + "]";
 	}
 	
 }

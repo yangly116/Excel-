@@ -10,7 +10,7 @@ begin
      execute immediate 'create table ${tableName}
 (
 [split id="field"]
-	  ${field}                    ${type} ${isNull},
+	  ${field}                    ${type} ${isNull} ${extAttr},
 [split/] 
 )';
 execute immediate 'comment on table ${tableName} is ''${tableComment}''';
@@ -29,7 +29,7 @@ begin
    where a.constraint_name = upper('PK_${tableName}');
         
     if cnt = 0 then
-        execute immediate 'alter table ${tableName} add constraint PK_${tableName} primary key (${pk})';
+        execute immediate 'alter table ${tableName} add constraint PK_${tableName} primary key (${lPks})';
   end if;             
 end;
 /

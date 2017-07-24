@@ -15,7 +15,7 @@ public class BTest {
 	public void cleanScript() {
 		StartService startService = (StartService) AContextServer.aContextServer.getAppContext().getBean("BDF.startService");
 		//startService.cleanScript();
-		//startService.start();
-		startService.refreshScript();
+		startService.start();
+		//startService.refreshScript();
 	}
 }

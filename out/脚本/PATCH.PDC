@@ -1,4 +1,2 @@
-@table\tableName.sql;
-@table\tableName2.sql;
-@field\tableName2-field.sql;
-@field\tableName-field.sql;
+@table\AMS_tableName.sql;
+@field\AMS_tableName-field.sql;

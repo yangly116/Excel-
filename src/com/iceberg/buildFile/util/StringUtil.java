@@ -37,7 +37,7 @@ public class StringUtil {
 		return "	  "+str;
 	}
 	public static String getFieldType(String type){
-		if(type == null){
+		if(isEmpty(type)){
 			return "";
 		}
 		String first = type.substring(0,1);
@@ -45,17 +45,17 @@ public class StringUtil {
 		if(type.length()>1){
 			pfix = type.substring(1,type.length());
 		}
-		if("D".equals(first)){
+		if("D".equalsIgnoreCase(first)){
 			return "DATE";
-		}else if("C".equals(first)){
+		}else if("C".equalsIgnoreCase(first)){
 			return "NVARCHAR2"+"("+pfix+")";
-		}else if("N".equals(first)){
-			if("".equals(pfix)){
+		}else if("N".equalsIgnoreCase(first)){
+			if("".equalsIgnoreCase(pfix)){
 				return "NUMBER";
 			}else{
 				return "NUMBER"+"("+pfix.replace(".", ",")+")";
 			}
-		}else if("I".equals(first)){
+		}else if("I".equalsIgnoreCase(first)){
 			return "INTEGER";
 		}
 		return "";
@@ -69,11 +69,17 @@ public class StringUtil {
 		if(type.length()>1){
 			pfix = type.substring(1,type.length());
 		}
-		if("Y".equals(first)){
+		if("Y".equalsIgnoreCase(first)){
 			return "";
 		}else{
 			return "NOT NULL";
 		}
+	}
+	public static String getFieldExtAttr(String type){
+		if(isEmpty(type)){
+			return "";
+		}
+		return type;
 	}
 	/**
 	 * 获取文件名后缀 例如: aa.txt  返回 .txt
@@ -84,5 +90,19 @@ public class StringUtil {
 		int index = fileName.lastIndexOf(".");
 		String fixName = fileName.substring(index, fileName.length());
 		return fixName;
+	}
+	/**
+	 * 
+	 * @param lStrings
+	 * @return
+	 */
+	public static String splitList(List<String> lStrings){
+		StringBuilder builder = new StringBuilder();
+		for (int i = 0; i < lStrings.size(); i++) {
+			builder.append(lStrings.get(i)+",");
+		}
+		String str = builder.toString();
+		str = str.substring(0, str.length()-1);
+		return str;
 	}
 }

@@ -67,7 +67,7 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 	private String writeHeadBy1(String source,Table table){
 		List<String> ltargs = new ArrayList<>();
 		List<String> lparms = new ArrayList<>();
-		lparms.add("pk"); ltargs.add(table.getPk());
+		//lparms.add("pk"); ltargs.add(table.getPk());
 		lparms.add("seq"); ltargs.add(table.getSeq());
 		lparms.add("tableName"); ltargs.add(table.getTableName());
 		lparms.add("id"); ltargs.add("insert"+table.getTableName());
@@ -90,7 +90,7 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 			Field field = entry.getValue();
 			List<String> ltargs = new ArrayList<>();
 			List<String> lparms = new ArrayList<>();
-			lparms.add("pk"); ltargs.add(table.getPk());
+			//lparms.add("pk"); ltargs.add(table.getPk());
 			lparms.add("isNot"); ltargs.add(ibatis.getIsNot());
 			lparms.add("property"); ltargs.add(field.getTab());
 			String successStr = ParmUtil.replaceparm(source, ltargs, lparms);//替换参数
@@ -98,8 +98,8 @@ public class CallIbatisWorkServiceImpl implements CallWorkService{
 		}
 	}
 	private void writeBy3(String source,Table table){
-		String successStr = ParmUtil.replaceparm(source, table.getPk(), "pk");//替换参数
-		BFileUtil.write(outFile, successStr);
+		//String successStr = ParmUtil.replaceparm(source, table.getPk(), "pk");//替换参数
+		//BFileUtil.write(outFile, successStr);
 	}
 	private void writeValues4(String source,Table table){
 		//List<String> lFields = table.getFields();

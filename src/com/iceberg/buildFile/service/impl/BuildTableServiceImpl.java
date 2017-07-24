@@ -20,6 +20,7 @@ import com.iceberg.buildFile.main.Setting;
 import com.iceberg.buildFile.service.BuildTableService;
 import com.iceberg.buildFile.service.ExcelService;
 import com.iceberg.buildFile.service.ScanFileService;
+import com.iceberg.buildFile.util.StringUtil;
 
 /** 
  * 
@@ -73,21 +74,28 @@ public class BuildTableServiceImpl implements BuildTableService {
 		List<List<String>> lists = lListDatas.get(0);//获取第一个页签
 		for(int j=0;j<lists.size();j++){//row行
 			List<String> lStrings = lists.get(j);
-			if(j==0){
+			if(j==0){//读取表头行
 				fillTableHead(table,lStrings);
-				continue;
 			}
-			if(j>=2){
+			if(j>=4){//读取字段
 				Field field = new Field();
-				if(lStrings.size()>=5){
-					field.setComment(lStrings.get(0)+":"+lStrings.get(4));
+				if(lStrings.size()>=7){//读取表注释
+					field.setComment(lStrings.get(0)+":"+lStrings.get(6));
 				}else{
 					field.setComment(lStrings.get(0));
 				}
-				field.setTab(lStrings.get(1));
-				field.setType(lStrings.get(2));
+				field.setTab(lStrings.get(1));//读取字段名
+				field.setType(lStrings.get(2));//读取类型
 				if(lStrings.size()>=4){
-					field.setIsNull(lStrings.get(3));
+					field.setIsNull(lStrings.get(3));//读取可空
+				}
+				if(lStrings.size()>=5){//读取主键
+					if(!StringUtil.isEmpty(lStrings.get(4))&&"Y".equalsIgnoreCase(lStrings.get(4))){
+						table.getlPks().add(lStrings.get(1));
+					}
+				}
+				if(lStrings.size()>=6){//扩展属性
+					field.setExtAttr(lStrings.get(5));//读取主键
 				}
 				fieldMap.put(lStrings.get(1), field);
 			}
@@ -103,10 +111,9 @@ public class BuildTableServiceImpl implements BuildTableService {
 	 */
 	private void fillTableHead(Table table,List<String> lStrings){
 		table.setTableName(lStrings.get(1));
-		table.setPk(lStrings.get(3));
-		table.setTableComment(lStrings.get(4));
+		table.setTableComment(lStrings.get(3));
 		table.setSeq("SEQ_"+table.getTableName());
-		table.setOpType(OpTypeTableEnum.getType(lStrings.get(5)).getText());
+		table.setOpType(OpTypeTableEnum.getType(lStrings.get(6)).getText());
 	}
 	public ScanFileService getScanFileService() {
 		return scanFileService;

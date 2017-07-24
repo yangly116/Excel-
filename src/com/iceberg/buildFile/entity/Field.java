@@ -17,6 +17,8 @@ public class Field {
 	private String memo;
 	/**注释*/
 	private String comment;
+	/**扩展属性*/
+	private String extAttr;
 	public String getTab() {
 		return tab;
 	}
@@ -53,10 +55,18 @@ public class Field {
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
+	
+	public String getExtAttr() {
+		return extAttr;
+	}
+	public void setExtAttr(String extAttr) {
+		this.extAttr = extAttr;
+	}
 	@Override
 	public String toString() {
 		return "Field [tab=" + tab + ", name=" + name + ", type=" + type + ", isNull=" + isNull + ", memo=" + memo
-				+ ", comment=" + comment + "]";
+				+ ", comment=" + comment + ", extAttr=" + extAttr + "]";
 	}
+
 	
 }

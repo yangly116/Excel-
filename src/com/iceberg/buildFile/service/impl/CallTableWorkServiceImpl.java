@@ -155,9 +155,12 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	private Map<String, String> getTableMap(Table table){
 		Map<String, String> map = new HashMap<>();
 		map.put("${tableName}", table.getTableName());
-		map.put("${pk}", table.getPk());
 		map.put("${tableComment}", table.getTableComment());
+		map.put("${lPks}", getPks(table));
 		return map;
+	}
+	private String getPks(Table table){
+		return StringUtil.splitList(table.getlPks());
 	}
 	private Map<String, String> getFieldMap(Field field,Table table){
 		Map<String, String> map = new HashMap<>();
@@ -166,52 +169,8 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 		map.put("${comment}", field.getComment());
 		map.put("${tableName}", table.getTableName());
 		map.put("${isNull}", StringUtil.getFieldIsNull(field.getIsNull()));
+		map.put("${extAttr}", StringUtil.getFieldExtAttr(field.getExtAttr()));
 		return map;
-	}
-	/**
-	 * 将获取的Excel数据转换为table对象 
-	 * @param mapData
-	 * @return
-	 */
-	@SuppressWarnings("unchecked")
-	private Table excelDataToTable(Map<String, Object> mapData){
-		Table table = new Table();
-		LinkedHashMap<String, Field> fieldMap = new LinkedHashMap<>();
-		List<List<List<String>>> lListDatas = (List<List<List<String>>>) mapData.get("lListDatas");
-		//for(int i=0;i<lListDatas.size();i++){//sheet页签
-		List<List<String>> lists = lListDatas.get(0);//获取第一个页签
-		for(int j=0;j<lists.size();j++){//row行
-			List<String> lStrings = lists.get(j);
-			if(j==0){
-				fillTableHead(table,lStrings);
-				continue;
-			}
-			if(j>=2){
-				Field field = new Field();
-				if(lStrings.size()>=5){
-					field.setComment(lStrings.get(0)+":"+lStrings.get(4));
-				}else{
-					field.setComment(lStrings.get(0));
-				}
-				field.setTab(lStrings.get(1));
-				field.setType(lStrings.get(2));
-				fieldMap.put(lStrings.get(1), field);
-			}
-		}
-		//}
-		table.setFieldMap(fieldMap);
-		return table;
-	}
-	/**
-	 * 填充表头信息
-	 * @param table
-	 * @param lStrings
-	 */
-	private void fillTableHead(Table table,List<String> lStrings){
-		table.setTableName(lStrings.get(1));
-		table.setPk(lStrings.get(3));
-		table.setTableComment(lStrings.get(4));
-		table.setSeq("SEQ_"+table.getTableName());
 	}
 	public BuildTableService getBuildTableService() {
 		return buildTableService;
