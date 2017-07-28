@@ -15,7 +15,7 @@ public class Setting {
 	public static String scanfFilePath = userDir+"in";
 	/**设置产品生成的根位置*/
 	//public static String produceRoot = userDir+"produce";
-	public static String scriptPath = userDir+"out"+File.separator+"脚本";
+	public static String scriptPath = userDir+"out";
 	public static String config = userDir+"config";
 	/**展示信息*/
 	public static String showMS = "欢迎使用BDF！";

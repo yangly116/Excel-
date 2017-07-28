@@ -31,5 +31,5 @@ public interface ScanFileService {
 	 * @throws FileNotFoundException
 	 * @throws IOException
 	 */
-	public boolean scanfFileNoPFix(String filePath, List<File> lFiles,String filePFix) throws FileNotFoundException, IOException ;
+	public boolean scanfFileNoPFix(String filePath, List<File> lFiles,String filePFix,List<String> directorys) throws FileNotFoundException, IOException ;
 }

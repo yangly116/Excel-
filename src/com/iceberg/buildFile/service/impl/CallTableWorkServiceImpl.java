@@ -48,13 +48,14 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	private BuildPatchService buildPatchService;
 	private File outFile;
 	private String pFix = ".sql";
+	private String fix = "脚本"+File.separator+"table";
 	@Override
 	public void callWork() {
 		List<Table> lTables = buildTableService.getLtables();
 		for (int i = 0; i < lTables.size(); i++) {
 			Table table = lTables.get(i);
 			if(OpTypeTableEnum.NEW_TABLE_1.getText().equals(table.getOpType())){
-				creatFileService.createOutFileDirectory(table.getOpType());//创建脚本文件
+				creatFileService.createOutFileDirectory(fix);//创建脚本文件
 				wirteTable(table);
 				buildPatchService.buildPatch("@table"+File.separator+table.getTableName()+pFix+";\r\n");
 			}
@@ -71,7 +72,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	}
 	private void wirteTable(Table table){
 		File templateFile = new File(System.getProperty("user.dir")+"/template/table/table.xml");
-		this.outFile = new File(Setting.scriptPath+File.separator+"table"+File.separator+table.getTableName()+pFix);
+		this.outFile = new File(Setting.scriptPath+File.separator+fix+File.separator+table.getTableName()+pFix);
 		Stack<String> stack = new Stack<>();
 		StringBuilder builder = null;
 		BFileUtil.clearFile(outFile);//清空文件内容
@@ -126,6 +127,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 			}
 		}
 		BFileUtil.write(outFile, strLine+"\r\n");
+		//System.out.println("outFile:"+outFile);
 		return strLine;
 	}
 	private String writeField(Table table,String tempLine){

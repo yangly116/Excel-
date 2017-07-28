@@ -1,0 +1,19 @@
+  {"data": {
+      "MsgHeader": {
+      "type": "struct",
+      "minOccurs": 1,
+      "maxOccurs": 1,
+	  "RET_CODE":{
+      "type":"integer",
+      "required":"false"
+    },
+    "RET_MSG":{
+      "type":"string",
+      "required":"true",
+      "length":1024
+    },
+    "INS_ID":{
+      "type":"integer",
+      "required":"true"
+    }
+  }}

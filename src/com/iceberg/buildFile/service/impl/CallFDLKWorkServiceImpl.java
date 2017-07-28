@@ -26,18 +26,19 @@ import com.iceberg.buildFile.service.CallWorkService;
 import com.iceberg.buildFile.service.CreatFileService;
 import com.iceberg.buildFile.service.ScanFileService;
 import com.iceberg.buildFile.util.BFileUtil;
+import com.iceberg.buildFile.util.CastUtil;
 import com.iceberg.buildFile.util.PropUtil;
 import com.iceberg.buildFile.util.MatcherUtil;
 import com.iceberg.buildFile.util.ParmUtil;
 import com.iceberg.buildFile.util.StringUtil;
 
 /** 
- * 新增字段
+ * 数据交换平台
  * @author 作者：杨文培 
  * @version 创建时间：Jul 15, 2017 8:41:21 PM  
  */
 
-public class CallNewFieldWorkServiceImpl implements CallWorkService{
+public class CallFDLKWorkServiceImpl implements CallWorkService{
 	@Resource
 	private CreatFileService creatFileService;
 	@Resource
@@ -47,17 +48,16 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 	@Resource
 	private BuildPatchService buildPatchService;
 	private File outFile;
-	private String pFix = "-field"+".sql";
-	private String fix = "脚本"+File.separator+"field";
+	private String pFix = "-fdlk"+".txt";
+	private String fix = "fdlk";
 	@Override
 	public void callWork() {
 		List<Table> lTables = buildTableService.getLtables();
 		for (int i = 0; i < lTables.size(); i++) {
 			Table table = lTables.get(i);
-			if(OpTypeTableEnum.NEW_FIELD_2.getText().equals(table.getOpType())){
+			if(OpTypeTableEnum.FDLK_3.getText().equals(table.getOpType())){
 				creatFileService.createOutFileDirectory(fix);//创建脚本文件
 				wirteTable(table);
-				buildPatchService.buildPatch("@field"+File.separator+table.getTableName()+pFix+";\r\n");
 			}
 		}
 		if(lTables!=null&&lTables.size()!=0){
@@ -71,8 +71,8 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 		this.scanFileService = scanFileService;
 	}
 	private void wirteTable(Table table){
-		File templateFile = new File(System.getProperty("user.dir")+"/template/table/addField.xml");
-		this.outFile = new File(Setting.scriptPath+File.separator+fix+File.separator+table.getTableName()+"-field"+".sql");
+		File templateFile = new File(System.getProperty("user.dir")+"/template/fdlk/fdlk.xml");
+		this.outFile = new File(Setting.scriptPath+File.separator+fix+File.separator+table.getTableName()+pFix);
 		Stack<String> stack = new Stack<>();
 		StringBuilder builder = null;
 		BFileUtil.clearFile(outFile);//清空文件内容
@@ -81,6 +81,7 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 			String top = null;
 			for(int i=0;i<list.size();i++){
 				String strLine = list.get(i);
+				//System.out.println(strLine);
 				if(MatcherUtil.isStart(strLine)){
 					top = MatcherUtil.getIdContent(strLine, "id");
 					stack.push(top);
@@ -97,10 +98,10 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 				}
 				if (MatcherUtil.isEnd(strLine)) {// 判断结束标签
 					stack.pop();
-					if("isField".equals(top)||"addField".equals(top)){
+					if("fdlk_field".equals(top)){
 						String strLineBf = writeField(table,builder.toString());
-						if("isField".equals(top)){
-							strLineBf=StringUtil.replaSubFix(strLineBf.trim());
+						if("fdlk_field".equals(top)){
+							strLineBf=""+StringUtil.replaSubFix(strLineBf.trim());
 						}
 						BFileUtil.write(outFile, strLineBf+"\r\n");
 					}
@@ -114,25 +115,13 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 		}
 	}
 	private String replaceLine(String strLine,Table table){
-		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("addField"), ","));
-		Map<String, String> map = getTableMap(table);
-		for (int i = 0; i < lRegexs.size(); i++) {
-			String regex = lRegexs.get(i);
-			Pattern pattern = Pattern.compile(regex);
-			Matcher matcher = pattern.matcher(strLine);
-			while(matcher.find()){
-				String regStr = matcher.group();//匹配到的字符串
-				//System.out.println("regStr:"+regStr);
-				strLine = strLine.replaceAll(regex, map.get(regStr));
-			}
-		}
 		BFileUtil.write(outFile, strLine+"\r\n");
 		return strLine;
 	}
 	private String writeField(Table table,String tempLine){
 		Map<String, Field> fieldMap = table.getFieldMap();//有序map
 		StringBuilder builder = new StringBuilder();
-		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("field"), ","));
+		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("fdlk"), ","));
 		for (Map.Entry<String, Field> entry : fieldMap.entrySet()) {
 			String tempStr = new String(tempLine);
 			//String key =  entry.getKey();
@@ -161,11 +150,7 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 	private Map<String, String> getFieldMap(Field field,Table table){
 		Map<String, String> map = new HashMap<>();
 		map.put("${field}", field.getTab());
-		map.put("${type}", StringUtil.getFieldType(field.getType()));
-		map.put("${comment}", field.getComment());
-		map.put("${tableName}", table.getTableName());
-		map.put("${isNull}", StringUtil.getFieldIsNull(field.getIsNull()));
-		map.put("${extAttr}", StringUtil.getFieldExtAttr(field.getExtAttr()));
+		map.put("${fdlk}", StringUtil.getFdlk(field));
 		return map;
 	}
 	public BuildTableService getBuildTableService() {

@@ -79,7 +79,7 @@ public class ScanFileServiceImpl implements ScanFileService {
 	 * @see com.iceberg.buildFile.service.ScanFileService#scanfFileNoPFix(java.lang.String, java.util.List, java.lang.String)
 	 */
 	@Override
-	public boolean scanfFileNoPFix(String filePath, List<File> lFiles, String filePFix)
+	public boolean scanfFileNoPFix(String filePath, List<File> lFiles, String filePFix,List<String> directorys)
 			throws FileNotFoundException, IOException {
 		try {
             File file = new File(filePath);
@@ -94,7 +94,9 @@ public class ScanFileServiceImpl implements ScanFileService {
 									lFiles.add(readfile);
 								}
                             } else if (readfile.isDirectory()) {
-                            	scanfFileNoPFix(filePath + File.separator + filelist[i],lFiles,filePFix);
+                            	if(!directorys.contains(readfile.getName())){
+                            		scanfFileNoPFix(filePath + File.separator + filelist[i],lFiles,filePFix,directorys);
+                            	}
                             }
                     }
 

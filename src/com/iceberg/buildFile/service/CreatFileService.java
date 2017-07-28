@@ -13,5 +13,5 @@ public interface CreatFileService {
 	 * 根据code创建不同的脚本文件
 	 * @param code
 	 */
-	public void createOutFileDirectory(String code);
+	public void createOutFileDirectory(String fix);
 }

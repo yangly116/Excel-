@@ -28,7 +28,7 @@ public class BuildPatchServiceImpl implements BuildPatchService {
 	private CreatFileServiceImpl creatFileServiceImpl;
 	@Resource
 	private ScanFileService scanFileService;
-	File patchFile = new File(Setting.scriptPath+File.separator+"PATCH.PDC");
+	File patchFile = new File(Setting.scriptPath+File.separator+"脚本"+File.separator+"PATCH.PDC");
 	/* (non-Javadoc)
 	 * @see com.iceberg.buildFile.service.BuildPatchService#buildPatch(java.lang.String)
 	 */
@@ -70,7 +70,9 @@ public class BuildPatchServiceImpl implements BuildPatchService {
 		BFileUtil.clearFile(patchFile);
 		List<File> lFiles = new ArrayList<>();
 		try {
-			scanFileService.scanfFileNoPFix(Setting.scriptPath, lFiles,".PDC");
+			List<String> diretorys = new ArrayList<>();//不扫描的目录
+			diretorys.add("fdlk");
+			scanFileService.scanfFileNoPFix(Setting.scriptPath, lFiles,".PDC",diretorys);
 			for (int i = 0; i < lFiles.size(); i++) {
 				File file = lFiles.get(i);
 				String filePath = file.getAbsolutePath();

@@ -23,13 +23,10 @@ public class CreatFileServiceImpl implements CreatFileService {
 	 * @see com.iceberg.buildFile.service.CreatFileService#createOutFileDirectory(java.lang.String)
 	 */
 	@Override
-	public void createOutFileDirectory(String code){
+	public void createOutFileDirectory(String fix){
 		createScriptDirectory();
-		if(OpTypeTableEnum.NEW_FIELD_2.getText().equals(code)){
-			createDirectoryByCode("field");
-		}else if(OpTypeTableEnum.NEW_TABLE_1.getText().equals(code)){
-			createDirectoryByCode("table");
-		}
+		//System.out.println("fix:"+fix);
+		createDirectoryByCode(fix);
 	}
 	private void createDirectoryByCode(String dirName){
 		File outFileDir = new File(Setting.scriptPath+File.separator+dirName);
@@ -39,12 +36,12 @@ public class CreatFileServiceImpl implements CreatFileService {
 		}
 	}
 	public void createScriptDirectory() {
-		File scriptFile = new File(Setting.scriptPath);
+		File scriptFile = new File(Setting.scriptPath+File.separator+"脚本");
 		if(!scriptFile.exists()){
 			scriptFile.mkdirs();
 			//System.out.println("生成目录:"+scriptFile.getPath());
 		}
-		patchFile = new File(Setting.scriptPath+File.separator+"PATCH.PDC");
+		patchFile = new File(Setting.scriptPath+File.separator+"脚本"+File.separator+"PATCH.PDC");
 		if(!patchFile.exists()){
 			try {
 				patchFile.createNewFile();

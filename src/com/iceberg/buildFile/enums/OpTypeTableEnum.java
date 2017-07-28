@@ -31,6 +31,7 @@ public class OpTypeTableEnum implements Serializable {
  
     public static OpTypeTableEnum NEW_TABLE_1 = new OpTypeTableEnum("新建表", "1");
     public static OpTypeTableEnum NEW_FIELD_2 = new OpTypeTableEnum("新建字段", "2");
+    public static OpTypeTableEnum FDLK_3 = new OpTypeTableEnum("数据平台type", "3");
 
  
     public String getCode() {
