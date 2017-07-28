@@ -1,4 +1,5 @@
-  {"data": {
+{
+  "data": {
       "MsgHeader": {
       "type": "struct",
       "minOccurs": 1,
@@ -8,4 +9,6 @@
       ${fdlk}
     },
 [split/] 
-  }}
+  }
+ }
+} 
