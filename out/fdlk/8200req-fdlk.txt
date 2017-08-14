@@ -1,150 +1,149 @@
-  {"data": {
-      "MsgHeader": {
-      "type": "struct",
-      "minOccurs": 1,
-      "maxOccurs": 1,
-	  "ERP_INS_ID":{
-      "type":"string",
-      "required":"false",
-      "length":32
-    },
-    "PAYER_ID":{
-      "type":"string",
-      "required":"false",
-      "length":18
-    },
-    "PAYER_NO":{
-      "type":"string",
-      "required":"false",
-      "length":32
-    },
-    "PAY_DATE":{
-      "type":"date",
-      "required":"false",
-      "length":8,
-      "dateformat":"yyyy-MM-dd"
-    },
-    "ABSTRACT":{
-      "type":"string",
-      "required":"false",
-      "length":60
-    },
-    "TR_TYPE":{
-      "type":"string",
-      "required":"false",
-      "length":2
-    },
-    "AMOUNT":{
-      "type":"integer",
-      "required":"false",
-      "length":16
-    },
-    "CURRENCY":{
-      "type":"string",
-      "required":"false",
-      "length":3
-    },
-    "RECE_ACC_NO":{
-      "type":"string",
-      "required":"false",
-      "length":32
-    },
-    "RECE_ACC_NAME":{
-      "type":"string",
-      "required":"false",
-      "length":60
-    },
-    "REG_NO":{
-      "type":"string",
-      "required":"true",
-      "length":4
-    },
-    "RECE_OPBANK_NO":{
-      "type":"string",
-      "required":"false",
-      "length":60
-    },
-    "RECE_OPBANK_NAME":{
-      "type":"string",
-      "required":"false",
-      "length":60
-    },
-    "RECE_CNAPS":{
-      "type":"string",
-      "required":"true",
-      "length":12
-    },
-    "URGENT_FLAG":{
-      "type":"string",
-      "required":"false",
-      "length":2
-    },
-    "PERSONALFLAG":{
-      "type":"string",
-      "required":"true",
-      "length":2
-    },
-    "CREATOR":{
-      "type":"string",
-      "required":"true",
-      "length":20
-    },
-    "CREATE_TIME":{
-      "type":"date",
-      "required":"true",
-      "length":8,
-      "dateformat":"yyyy-MM-dd"
-    },
-    "TEXTVALUE1":{
-      "type":"string",
-      "required":"true",
-      "length":255
-    },
-    "TEXTVALUE2":{
-      "type":"string",
-      "required":"true",
-      "length":255
-    },
-    "TEXTVALUE3":{
-      "type":"string",
-      "required":"true",
-      "length":255
-    },
-    "TEXTVALUE4":{
-      "type":"string",
-      "required":"true",
-      "length":255
-    },
-    "TEXTVALUE5":{
-      "type":"string",
-      "required":"true",
-      "length":255
-    },
-    "NUMBERVALUE1":{
-      "type":"integer",
-      "required":"true"
-    },
-    "NUMBERVALUE3":{
-      "type":"integer",
-      "required":"true",
-      "length":16
-    },
-    "DATEVALUE1":{
-      "type":"date",
-      "required":"true",
-      "length":8,
-      "dateformat":"yyyy-MM-dd"
-    },
-    "DATEVALUE2":{
-      "type":"date",
-      "required":"true",
-      "length":8,
-      "dateformat":"yyyy-MM-dd"
-    },
-    "DATEVALUE3":{
-      "type":"date",
-      "required":"true",
-      "length":8,
-      "dateformat":"yyyy-MM-dd"
+{
+    "data": {
+        "ERP_INS_ID": {
+            "type": "string",
+            "required": "true",
+            "length": 32
+        },
+        "PAYER_ID": {
+            "type": "string",
+            "required": "true",
+            "length": 18
+        },
+        "PAYER_NO": {
+            "type": "string",
+            "required": "true",
+            "length": 32
+        },
+        "PAY_DATE": {
+            "type": "date",
+            "required": "true",
+            "length": 10,
+            "dateformat": "yyyy-MM-dd"
+        },
+        "ABSTRACT": {
+            "type": "string",
+            "required": "true",
+            "length": 60
+        },
+        "TR_TYPE": {
+            "type": "string",
+            "required": "true",
+            "length": 2
+        },
+        "AMOUNT": {
+            "type": "double",
+            "required": "true",
+            "length": 32
+        },
+        "CURRENCY": {
+            "type": "string",
+            "required": "true",
+            "length": 3
+        },
+        "RECE_ACC_NO": {
+            "type": "string",
+            "required": "true",
+            "length": 32
+        },
+        "RECE_ACC_NAME": {
+            "type": "string",
+            "required": "true",
+            "length": 60
+        },
+        "REG_NO": {
+            "type": "string",
+            "required": "false",
+            "length": 4
+        },
+        "RECE_OPBANK_NO": {
+            "type": "string",
+            "required": "true",
+            "length": 60
+        },
+        "RECE_OPBANK_NAME": {
+            "type": "string",
+            "required": "true",
+            "length": 60
+        },
+        "RECE_CNAPS": {
+            "type": "string",
+            "required": "false",
+            "length": 12
+        },
+        "URGENT_FLAG": {
+            "type": "string",
+            "required": "true",
+            "length": 2
+        },
+        "PERSONALFLAG": {
+            "type": "string",
+            "required": "false",
+            "length": 2
+        },
+        "CREATOR": {
+            "type": "string",
+            "required": "false",
+            "length": 20
+        },
+        "CREATE_TIME": {
+            "type": "date",
+            "required": "false",
+            "length": 10,
+            "dateformat": "yyyy-MM-dd"
+        },
+        "TEXTVALUE1": {
+            "type": "string",
+            "required": "false",
+            "length": 255
+        },
+        "TEXTVALUE2": {
+            "type": "string",
+            "required": "false",
+            "length": 255
+        },
+        "TEXTVALUE3": {
+            "type": "string",
+            "required": "false",
+            "length": 255
+        },
+        "TEXTVALUE4": {
+            "type": "string",
+            "required": "false",
+            "length": 255
+        },
+        "TEXTVALUE5": {
+            "type": "string",
+            "required": "false",
+            "length": 255
+        },
+        "NUMBERVALUE1": {
+            "type": "integer",
+            "required": "false",
+            "length": 32
+        },
+        "NUMBERVALUE3": {
+            "type": "double",
+            "required": "false",
+            "length": 32
+        },
+        "DATEVALUE1": {
+            "type": "date",
+            "required": "false",
+            "length": 10,
+            "dateformat": "yyyy-MM-dd"
+        },
+        "DATEVALUE2": {
+            "type": "date",
+            "required": "false",
+            "length": 10,
+            "dateformat": "yyyy-MM-dd"
+        },
+        "DATEVALUE3": {
+            "type": "date",
+            "required": "false",
+            "length": 10,
+            "dateformat": "yyyy-MM-dd"
+        }
     }
-  }}
+}

@@ -1,0 +1,59 @@
+{
+    "data": {
+        "RET_CODE": {
+            "type": "integer",
+            "required": "true",
+            "length": 32
+        },
+        "RET_MSG": {
+            "type": "string",
+            "required": "false",
+            "length": 1024
+        },
+        "COUNT": {
+            "type": "integer",
+            "required": "true",
+            "length": 32
+        },
+        "DETAIL": {
+            "ROW": {
+                "RET_CODE": {
+                    "type": "string",
+                    "required": "false",
+                    "length": 1024
+                },
+                "RET_MSG": {
+                    "type": "string",
+                    "required": "false",
+                    "length": 1024
+                },
+                "ACNT_NO": {
+                    "type": "string",
+                    "required": "false",
+                    "length": 32
+                },
+                "ACNT_NAME": {
+                    "type": "string",
+                    "required": "false",
+                    "length": 80
+                },
+                "CURRENCY": {
+                    "type": "string",
+                    "required": "false",
+                    "length": 3
+                },
+                "BALANCE": {
+                    "type": "integer",
+                    "required": "false",
+                    "length": 30
+                },
+                "QRY_DATE": {
+                    "type": "date",
+                    "required": "false",
+                    "length": 10,
+                    "dateformat": "yyyy-MM-dd"
+                }
+            }
+        }
+    }
+}

@@ -1,2 +1,5 @@
-@table\AMS_tableName.sql;
-@field\AMS_tableName-field.sql;
+@table\AMS_YearPlan.sql;
+@table\AMS_FileInfo.sql;
+@table\AMS_Project.sql;
+@table\AMS_stage.sql;
+@table\AMS_review.sql;

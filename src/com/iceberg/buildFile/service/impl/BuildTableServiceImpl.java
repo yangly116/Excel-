@@ -43,8 +43,8 @@ public class BuildTableServiceImpl implements BuildTableService {
 				List<List<List<String>>> lListDatas = excelService.getExcelAllData(lFiles.get(i));
 				Map<String, Object> mapData = new HashMap<>();
 				mapData.put("lListDatas", lListDatas);
-				Table table = excelDataToTable(mapData);
-				lTables.add(table);
+				List<Table> lTables2 = excelDataToTable(mapData);
+				lTables.addAll(lTables2);
 			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -66,43 +66,45 @@ public class BuildTableServiceImpl implements BuildTableService {
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	private Table excelDataToTable(Map<String, Object> mapData){
-		Table table = new Table();
-		LinkedHashMap<String, Field> fieldMap = new LinkedHashMap<>();
+	private List<Table> excelDataToTable(Map<String, Object> mapData){
+		List<Table> lTables = new ArrayList<>();
 		List<List<List<String>>> lListDatas = (List<List<List<String>>>) mapData.get("lListDatas");
-		//for(int i=0;i<lListDatas.size();i++){//sheet页签
-		List<List<String>> lists = lListDatas.get(0);//获取第一个页签
-		for(int j=0;j<lists.size();j++){//row行
-			List<String> lStrings = lists.get(j);
-			if(j==0){//读取表头行
-				fillTableHead(table,lStrings);
-			}
-			if(j>=4){//读取字段
-				Field field = new Field();
-				if(lStrings.size()>=7){//读取表注释
-					field.setComment(lStrings.get(0)+":"+lStrings.get(6));
-				}else{
-					field.setComment(lStrings.get(0));
+		for(int i=0;i<lListDatas.size();i++){//sheet页签
+			Table table = new Table();
+			LinkedHashMap<String, Field> fieldMap = new LinkedHashMap<>();
+			List<List<String>> lists = lListDatas.get(i);//获取页签
+			for(int j=0;j<lists.size();j++){//row行
+				List<String> lStrings = lists.get(j);
+				if(j==0){//读取表头行
+					fillTableHead(table,lStrings);
 				}
-				field.setTab(lStrings.get(1));//读取字段名
-				field.setType(lStrings.get(2));//读取类型
-				if(lStrings.size()>=4){
-					field.setIsNull(lStrings.get(3));//读取可空
-				}
-				if(lStrings.size()>=5){//读取主键
-					if(!StringUtil.isEmpty(lStrings.get(4))&&"Y".equalsIgnoreCase(lStrings.get(4))){
-						table.getlPks().add(lStrings.get(1));
+				if(j>=4){//读取字段
+					Field field = new Field();
+					if(lStrings.size()>=7){//读取表注释
+						field.setComment(lStrings.get(0)+":"+lStrings.get(6));
+					}else{
+						field.setComment(lStrings.get(0));
 					}
+					field.setTab(lStrings.get(1));//读取字段名
+					field.setType(lStrings.get(2));//读取类型
+					if(lStrings.size()>=4){
+						field.setIsNull(lStrings.get(3));//读取可空
+					}
+					if(lStrings.size()>=5){//读取主键
+						if(!StringUtil.isEmpty(lStrings.get(4))&&"Y".equalsIgnoreCase(lStrings.get(4))){
+							table.getlPks().add(lStrings.get(1));
+						}
+					}
+					if(lStrings.size()>=6){//扩展属性
+						field.setExtAttr(lStrings.get(5));//读取主键
+					}
+					fieldMap.put(lStrings.get(1), field);
 				}
-				if(lStrings.size()>=6){//扩展属性
-					field.setExtAttr(lStrings.get(5));//读取主键
-				}
-				fieldMap.put(lStrings.get(1), field);
 			}
+			table.setFieldMap(fieldMap);
+			lTables.add(table);
 		}
-		//}
-		table.setFieldMap(fieldMap);
-		return table;
+		return lTables;
 	}
 	/**
 	 * 填充表头信息

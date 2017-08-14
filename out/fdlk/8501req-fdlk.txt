@@ -1,0 +1,22 @@
+{
+  "data": {
+	  "ACNTNO":{
+      "type":"string",
+      "required":"true",
+      "length":18
+    },
+    "START_DATE":{
+      "type":"date",
+      "required":"true",
+      "length":10,
+      "dateformat":"yyyy-MM-dd"
+    },
+    "END_DATE":{
+      "type":"date",
+      "required":"true",
+      "length":10,
+      "dateformat":"yyyy-MM-dd"
+    }
+  }
+}
+

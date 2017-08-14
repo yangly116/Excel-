@@ -34,7 +34,10 @@ public class BuildPatchServiceImpl implements BuildPatchService {
 	 */
 	@Override
 	public void buildPatch(String outStr) {
+		//System.out.println("outStr:"+outStr);
 		creatFileServiceImpl.createScriptDirectory();
+		//System.out.println("patchFile:"+patchFile.getAbsolutePath());
+		patchFile = new File(Setting.scriptPath+File.separator+"脚本"+File.separator+"PATCH.PDC");
 		BFileUtil.write(patchFile, outStr);
 	}
 
@@ -66,7 +69,8 @@ public class BuildPatchServiceImpl implements BuildPatchService {
 
 	@Override
 	public void refreshScript() {
-		File patchFile = creatFileServiceImpl.getPatchFile();
+		//File patchFile = creatFileServiceImpl.getPatchFile();
+		File patchFile = createScriptDirectory();
 		BFileUtil.clearFile(patchFile);
 		List<File> lFiles = new ArrayList<>();
 		try {
@@ -87,6 +91,23 @@ public class BuildPatchServiceImpl implements BuildPatchService {
 			e.printStackTrace();
 		}
 		
+	}
+	private File createScriptDirectory() {
+		File scriptFile = new File(Setting.scriptPath);
+		
+		if(!scriptFile.exists()){
+			scriptFile.mkdirs();
+			//System.out.println("生成目录:"+scriptFile.getPath());
+		}
+		File patchFileRef = new File(Setting.scriptPath+File.separator+"PATCH.PDC");
+		if(!patchFile.exists()){
+			try {
+				patchFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return patchFileRef;
 	}
 
 }

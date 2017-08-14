@@ -1,14 +1,10 @@
 {
   "data": {
-      "MsgHeader": {
-      "type": "struct",
-      "minOccurs": 1,
-      "maxOccurs": 1,
 [split id="fdlk_field"]
     "${field}":{
       ${fdlk}
     },
 [split/] 
   }
- }
-} 
+}
+

@@ -10,7 +10,7 @@
       "required":"false",
       "length":1024
     },
-    "INS_ID":{
+    "ROW_NUM":{
       "type":"integer",
       "required":"false",
       "length":32

@@ -46,14 +46,14 @@ public class CastUtil {
 			pfix = type.substring(1,type.length());
 		}
 		if("D".equalsIgnoreCase(first)){
-			return "8";
+			return "10";
 		}else if("C".equalsIgnoreCase(first)){
 			return pfix;
 		}else if("N".equalsIgnoreCase(first)){
 			if("".equalsIgnoreCase(pfix)){
-				return null;
+				return "32";
 			}else{
-				return "16";
+				return "32";//integer
 			}
 		}else if("I".equalsIgnoreCase(first)){
 			return null;
@@ -62,9 +62,9 @@ public class CastUtil {
 	}
 	private static String getRequired(String type){
 		if("Y".equalsIgnoreCase(type)){
-			return "true";
-		}else{
 			return "false";
+		}else{
+			return "true";
 		}
 	}
 	private static String getFdlkType(String type){
@@ -81,7 +81,11 @@ public class CastUtil {
 		}else if("C".equalsIgnoreCase(first)){
 			return "string";
 		}else if("N".equalsIgnoreCase(first)){
-			return "integer";
+			if("".equalsIgnoreCase(pfix)){
+				return "integer";
+			}else{
+				return "double";//
+			}
 		}else if("I".equalsIgnoreCase(first)){
 			return "integer";
 		}

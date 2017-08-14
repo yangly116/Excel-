@@ -1,0 +1,24 @@
+{
+    "data": {
+        "COUNT": {
+            "type": "integer",
+            "required": "false",
+            "length": 64
+        },
+        "DETAIL": {
+            "ROW": {
+                "ACNT_NO": {
+                    "type": "string",
+                    "required": "true",
+                    "length": 32
+                },
+                "START_DATE": {
+                    "type": "date",
+                    "required": "true",
+                    "length": 10,
+                    "dateformat": "yyyy-MM-dd"
+                }
+            }
+        }
+    }
+}

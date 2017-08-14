@@ -1,0 +1,10 @@
+{
+  "data": {
+	  "ERP_INS_ID":{
+      "type":"string",
+      "required":"true",
+      "length":32
+    }
+  }
+}
+

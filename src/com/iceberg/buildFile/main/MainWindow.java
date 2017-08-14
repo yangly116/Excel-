@@ -56,6 +56,7 @@ public class MainWindow {
 	private void setPath(){
 		Setting.setScriptPath(produceText.getText());
 		Setting.setScanfFilePath(templateText.getText());
+		System.out.println("setPath();");
 	}
 	/**
 	 * Launch the application.

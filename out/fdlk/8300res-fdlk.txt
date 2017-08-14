@@ -1,0 +1,47 @@
+{
+  "data": {
+	  "RET_CODE":{
+      "type":"integer",
+      "required":"true",
+      "length":32
+    },
+    "RET_MSG":{
+      "type":"string",
+      "required":"false",
+      "length":1024
+    },
+    "BUSS_ID":{
+      "type":"integer",
+      "required":"false",
+      "length":32
+    },
+    "SHEET_NO":{
+      "type":"string",
+      "required":"false",
+      "length":64
+    },
+    "ACCOUNT_DATE":{
+      "type":"date",
+      "required":"false",
+      "length":10,
+      "dateformat":"yyyy-MM-dd"
+    },
+    "AMOUNT":{
+      "type":"integer",
+      "required":"false",
+      "length":32
+    },
+    "PAY_DATE":{
+      "type":"date",
+      "required":"false",
+      "length":10,
+      "dateformat":"yyyy-MM-dd"
+    },
+    "PAYER_OPBANK_NO":{
+      "type":"string",
+      "required":"false",
+      "length":60
+    }
+  }
+}
+
