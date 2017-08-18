@@ -53,7 +53,7 @@ public class CastUtil {
 			if("".equalsIgnoreCase(pfix)){
 				return "32";
 			}else{
-				return "32";//integer
+				return "32.5";//integer
 			}
 		}else if("I".equalsIgnoreCase(first)){
 			return null;
