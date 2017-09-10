@@ -1,11 +1,18 @@
 package com.iceberg.buildFile.util;
 
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 import com.iceberg.buildFile.entity.Fdlk;
 import com.iceberg.buildFile.entity.Field;
+import com.iceberg.buildFile.enums.FdlkMappingEnum;
 
 /** 
  * 
@@ -13,6 +20,7 @@ import com.iceberg.buildFile.entity.Field;
  * @version 创建时间：Jul 6, 2017 10:17:46 PM  
  */
 public class StringUtil {
+	private static Log log = LogFactory.getLog(StringUtil.class);
 	public static boolean isEmpty(String str){
 		boolean boo = false;
 		if(str == null || "".equals(str.trim())){
@@ -43,6 +51,10 @@ public class StringUtil {
 		if(isEmpty(type)){
 			return "";
 		}
+		String resStr = StringUtil.fullFieldType(type);
+		if(resStr==null){
+			return type;
+		}
 		String first = type.substring(0,1);
 		String pfix = "";
 		if(type.length()>1){
@@ -62,6 +74,64 @@ public class StringUtil {
 			return "INTEGER";
 		}
 		return "";
+	}
+	public static String fullFieldType(String type){
+		if(StringUtil.isEmpty(type)){
+			return null;
+		}
+		String regex = "^[I|i|C|c|N|n|D|d]{1}[0-9]{0,100}.{0,1}[0-9]{0,100}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(type);
+		while(matcher.find()){
+			String matcherStr = matcher.group();
+			//System.out.println(matcherStr);
+			if (matcherStr.length()!=type.length()) {
+				//System.out.println("return null");
+				return null;
+			}else{
+				return type;
+			}
+		}
+		return null;
+	}
+	public static String fullFieldType_FDLK(String type){
+		if(StringUtil.isEmpty(type)){
+			return null;
+		}
+		String regex = "^[I|i|C|c|N|n|D|d]{1}[0-9]{0,100}.{0,1}[0-9]{0,100}$";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(type);
+		while(matcher.find()){
+			String matcherStr = matcher.group();
+			//System.out.println(matcherStr);
+			if (matcherStr.length()!=type.length()) {
+				type = mapingFdlk(type);
+			}else{
+				return type;
+			}
+		}
+		type = mapingFdlk(type);
+		return type;
+	}
+	private static String mapingFdlk(String type){
+		String typeR = type.toUpperCase();
+		//System.out.println("typeR:"+typeR);
+		String regex = "^[INTEGER|NVARCHAR2|VARCHAR2|NUMBER|DATE]{0,100}";
+		Pattern pattern = Pattern.compile(regex);
+		Matcher matcher = pattern.matcher(typeR);
+		while(matcher.find()){
+			String matcherStr = matcher.group();
+			//System.out.println("matcherStr:"+matcherStr);
+			//log.info("matcherStr:"+matcherStr);
+			if(FdlkMappingEnum.getType(matcherStr)!=null){
+				typeR = typeR.replaceAll(matcherStr, FdlkMappingEnum.getType(matcherStr).getText());
+				typeR = typeR.replaceAll("\\(|\\)","");
+				typeR = typeR.replaceAll(",", ".");
+			}else{
+				log.info("未匹配到的字段："+typeR);
+			}
+		}
+		return typeR;
 	}
 	public static String getFdlk(Field field){
 		Fdlk fdlk = CastUtil.FieldToFdlk(field);
@@ -100,7 +170,7 @@ public class StringUtil {
 	}
 	public static String getFieldIsNull(String type){
 		if(isEmpty(type)){
-			return "NOT NULL";
+			return "";
 		}
 		String first = type.substring(0,1);
 		String pfix = "";
@@ -109,8 +179,44 @@ public class StringUtil {
 		}
 		if("Y".equalsIgnoreCase(first)){
 			return "";
-		}else{
+		}else if("N".equalsIgnoreCase(first)){
 			return "NOT NULL";
+		}else {
+			return "";
+		}
+	}
+	public static String getAlertFieldIsNull(String type){
+		if(isEmpty(type)){
+			return "";
+		}
+		String first = type.substring(0,1);
+		String pfix = "";
+		if(type.length()>1){
+			pfix = type.substring(1,type.length());
+		}
+		if("Y".equalsIgnoreCase(first)){
+			return "NULL";
+		}else if("N".equalsIgnoreCase(first)){
+			return "NOT NULL";
+		}else {
+			return "";
+		}
+	}
+	public static String getAlertFieldIsN(String type){
+		if(isEmpty(type)){
+			return "";
+		}
+		String first = type.substring(0,1);
+		String pfix = "";
+		if(type.length()>1){
+			pfix = type.substring(1,type.length());
+		}
+		if("Y".equalsIgnoreCase(first)){
+			return "N";
+		}else if("N".equalsIgnoreCase(first)){
+			return "Y";
+		}else {
+			return "";
 		}
 	}
 	public static String getFieldExtAttr(String type){

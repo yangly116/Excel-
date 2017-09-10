@@ -13,7 +13,7 @@ begin
 );	   
     if cnt = 0 then
 [split id="addField"]
-	   execute immediate 'ALTER TABLE ${tableName} ADD ${field} ${type} ${isNull} ${extAttr}';
+	   execute immediate 'ALTER TABLE ${tableName} ADD ${field} ${type} ${extAttr} ${isNull}';
        execute immediate 'comment on column ${tableName}.${field} is  ''${comment}''';
 [split/]
 	end if;

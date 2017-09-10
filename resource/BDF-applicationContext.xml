@@ -28,6 +28,7 @@
 		       <!--  <value>201</value> -->  
 		        <!-- 新增字段 -->
 		        <value>102</value>  
+		        <value>103</value>  
 		        <!-- 数据交换type -->
 		        <value>301</value>  
 		    </list>  
@@ -39,7 +40,10 @@
 			<entry key="101" value-ref="BDF.CallTableWorkServiceImpl" />
 			<!-- 生产ibatis插入语句 -->
 			<!-- <entry key="201" value-ref="BDF.callIbatisWorkServiceImpl" /> -->
+			<!-- 新增字段 -->
 			<entry key="102" value-ref="BDF.CallNewFieldWorkServiceImpl" />
+			<!-- 修改字段 -->
+			<entry key="103" value-ref="BDF.CallAlertFieldWorkServiceImpl" />
 			<!-- 数据交换平台 -->
 			<entry key="301" value-ref="BDF.CallFDLKWorkServiceImpl" />
 		</map>
@@ -48,6 +52,7 @@
 	<bean id="BDF.CallTableWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallTableWorkServiceImpl" />
 	<bean id="BDF.callIbatisWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallIbatisWorkServiceImpl" />
 	<bean id="BDF.CallNewFieldWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallNewFieldWorkServiceImpl" />
+	<bean id="BDF.CallAlertFieldWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallAlertFieldWorkServiceImpl" />
 	<bean id="BDF.CallFDLKWorkServiceImpl" class="com.iceberg.buildFile.service.impl.CallFDLKWorkServiceImpl" />
 	
 </beans>

@@ -17,22 +17,23 @@ import java.util.Vector;
  * @since：2017年2月24日 下午1:50:48
  * 
  */
-public class OpTypeTableEnum implements Serializable {
+public class FdlkMappingEnum implements Serializable {
     private String code;
     private String text;
     private static java.util.TreeMap map = new TreeMap();
-    private static OpTypeTableEnum[] list = null;
+    private static FdlkMappingEnum[] list = null;
  
-    private OpTypeTableEnum(String code, String text) {
+    private FdlkMappingEnum(String code, String text) {
         this.code = code;
         this.text = text;
         map.put(this.code, this);
     }
  
-    public static OpTypeTableEnum NEW_TABLE_1 = new OpTypeTableEnum("新建表", "1");
-    public static OpTypeTableEnum NEW_FIELD_2 = new OpTypeTableEnum("新增字段", "2");
-    public static OpTypeTableEnum FDLK_3 = new OpTypeTableEnum("数据平台type", "3");
-    public static OpTypeTableEnum Alert_Filed_4 = new OpTypeTableEnum("修改字段", "4");
+    public static FdlkMappingEnum INTEGER = new FdlkMappingEnum("INTEGER", "I");
+    public static FdlkMappingEnum NVARCHAR2 = new FdlkMappingEnum("NVARCHAR2", "C");
+    public static FdlkMappingEnum VARCHAR2 = new FdlkMappingEnum("VARCHAR2", "C");
+    public static FdlkMappingEnum NUMBER = new FdlkMappingEnum("NUMBER", "N");
+    public static FdlkMappingEnum DATE = new FdlkMappingEnum("DATE", "D");
 
  
     public String getCode() {
@@ -43,35 +44,35 @@ public class OpTypeTableEnum implements Serializable {
         return text;
     }
  
-    public static OpTypeTableEnum getType(String code) {
-        return (OpTypeTableEnum) map.get(code);
+    public static FdlkMappingEnum getType(String code) {
+        return (FdlkMappingEnum) map.get(code);
     }
  
-    public static OpTypeTableEnum[] getUsuallyString() {
+    public static FdlkMappingEnum[] getUsuallyString() {
         if (list == null) {
             int i = 0;
             Vector v = new Vector();
             java.util.Iterator it = map.keySet().iterator();
             while (it.hasNext()) {
                 Object obj = it.next();
-                OpTypeTableEnum type = (OpTypeTableEnum) map.get(obj);
+                FdlkMappingEnum type = (FdlkMappingEnum) map.get(obj);
                 v.add(type);
             }
-            list = new OpTypeTableEnum[v.size()];
+            list = new FdlkMappingEnum[v.size()];
             v.copyInto(list);
         }
         return list;
     }
  
     public int compareTo(Object obj) {
-        OpTypeTableEnum type = (OpTypeTableEnum) obj;
+        FdlkMappingEnum type = (FdlkMappingEnum) obj;
         return this.getCode().compareTo(type.getCode());
     }
  
     public boolean equals(Object obj) {
-        boolean ret = (obj != null) && (obj instanceof OpTypeTableEnum);
+        boolean ret = (obj != null) && (obj instanceof FdlkMappingEnum);
         if (ret) {
-            OpTypeTableEnum type = (OpTypeTableEnum) obj;
+            FdlkMappingEnum type = (FdlkMappingEnum) obj;
             ret = type.getCode().equals(this.getCode());
         }
         return ret;

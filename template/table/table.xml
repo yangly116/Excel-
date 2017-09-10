@@ -10,7 +10,7 @@ begin
      execute immediate 'create table ${tableName}
 (
 [split id="field"]
-	  ${field}                    ${type} ${isNull} ${extAttr},
+	  ${field}                    ${type} ${extAttr} ${isNull},
 [split/] 
 )';
 execute immediate 'comment on table ${tableName} is ''${tableComment}''';

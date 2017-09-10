@@ -20,6 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import com.iceberg.buildFile.server.AContextServer;
 import com.iceberg.buildFile.service.StartService;
 
@@ -38,11 +41,13 @@ public class MainWindow {
 	private JLabel showMSLable;
 	private StartService startService = (StartService) AContextServer.aContextServer.getAppContext().getBean("BDF.startService");
 	private int res = -100;
-	
+	private Log log = LogFactory.getLog(MainWindow.class);
 	/**
 	 * 初始化
 	 */
 	private void init(){
+		System.setProperty("log_home", Setting.logDir);
+		log.info("SYS_log_home"+Setting.logDir);
 		Toolkit kit = Toolkit.getDefaultToolkit(); // 定义工具包 
 		Dimension screenSize = kit.getScreenSize(); // 获取屏幕的尺寸 
 		int screenWidth = screenSize.width/2; // 获取屏幕的宽
@@ -51,7 +56,7 @@ public class MainWindow {
  		frmBdf.setLocation(screenWidth-width/2, screenHeight-height/2);
 		templateText.setText(Setting.scanfFilePath);
 		produceText.setText(Setting.scriptPath);
-		showMSLable.setText(Setting.showMS);
+		showMSLable.setText(Setting.getShowMS());
 	}
 	private void setPath(){
 		Setting.setScriptPath(produceText.getText());
@@ -109,7 +114,7 @@ public class MainWindow {
 		panel.add(templateText);
 		templateText.setColumns(12);
 		
-		JLabel lblNewLabel = new JLabel("模板路径：");
+		JLabel lblNewLabel = new JLabel("输入目录：");
 		lblNewLabel.setFont(new Font("SimSun", Font.PLAIN, 16));
 		lblNewLabel.setForeground(SystemColor.control);
 		lblNewLabel.setBounds(19, 60, 80, 33);
@@ -132,7 +137,7 @@ public class MainWindow {
 				}catch(Exception exception){
 					exception.printStackTrace();
 				}finally {
-					showMSLable.setText(Setting.showMS+" 生成完成！");
+					showMSLable.setText(Setting.getShowMS()+" 生成完成！");
 				}
 			}
 		});
@@ -146,7 +151,7 @@ public class MainWindow {
 		produceText.setBounds(97, 127, 359, 33);
 		panel.add(produceText);
 		
-		JLabel label_1 = new JLabel("生成路径：");
+		JLabel label_1 = new JLabel("输出目录：");
 		label_1.setForeground(SystemColor.menu);
 		label_1.setFont(new Font("SimSun", Font.PLAIN, 16));
 		label_1.setBounds(19, 126, 80, 33);
@@ -164,7 +169,7 @@ public class MainWindow {
 			@Override
 			public void mousePressed(MouseEvent arg0) {
 				try{
-					res = JOptionPane.showConfirmDialog(null, "确认清空生成目录？", "确认/取消", JOptionPane.YES_NO_OPTION); 
+					res = JOptionPane.showConfirmDialog(null, "清空后不可恢复，确定清空输出目录？", "确认/取消", JOptionPane.YES_NO_OPTION); 
 					if(res == JOptionPane.YES_NO_OPTION){
 						showMSLable.setText("正在清空脚本...");
 						setPath();

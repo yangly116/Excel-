@@ -1,5 +1,3 @@
-@table\AMS_YearPlan.sql;
-@table\AMS_FileInfo.sql;
-@table\AMS_Project.sql;
-@table\AMS_stage.sql;
-@table\AMS_review.sql;
+@aaa-table\AMS_tableName.sql;
+@add-field\AMS_tableName-add-field.sql;
+@alert-field\AMS_tableName-alert-field.sql;

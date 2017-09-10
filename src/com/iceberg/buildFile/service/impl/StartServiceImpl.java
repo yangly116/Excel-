@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import com.iceberg.buildFile.main.Setting;
 import com.iceberg.buildFile.service.CallWorkService;
 import com.iceberg.buildFile.service.CreatFileService;
 import com.iceberg.buildFile.service.StartService;
@@ -22,6 +23,7 @@ public class StartServiceImpl implements StartService{
 	private List<String> lCodes;//待执行的指令列表
 	@Override
 	public void start() {
+		Setting.getInit();
 		buildPatchServiceImpl.cleanPatch();
 		for (int j = 0; j < lCodes.size(); j++) {
 			String code = lCodes.get(j);

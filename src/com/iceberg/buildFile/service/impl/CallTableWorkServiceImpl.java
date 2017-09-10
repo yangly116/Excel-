@@ -48,7 +48,8 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 	private BuildPatchService buildPatchService;
 	private File outFile;
 	private String pFix = ".sql";
-	private String fix = "脚本"+File.separator+"table";
+	private String dir = "aaa-table";
+	private String fix = "脚本"+File.separator+dir;
 	@Override
 	public void callWork() {
 		List<Table> lTables = buildTableService.getLtables();
@@ -57,7 +58,7 @@ public class CallTableWorkServiceImpl implements CallWorkService{
 			if(OpTypeTableEnum.NEW_TABLE_1.getText().equals(table.getOpType())){
 				creatFileService.createOutFileDirectory(fix);//创建脚本文件
 				wirteTable(table);
-				buildPatchService.buildPatch("@table"+File.separator+table.getTableName()+pFix+";\r\n");
+				buildPatchService.buildPatch("@"+dir+File.separator+table.getTableName()+pFix+";\r\n");
 			}
 		}
 		if(lTables!=null&&lTables.size()!=0){

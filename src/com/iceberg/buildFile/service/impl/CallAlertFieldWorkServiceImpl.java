@@ -32,12 +32,12 @@ import com.iceberg.buildFile.util.ParmUtil;
 import com.iceberg.buildFile.util.StringUtil;
 
 /** 
- * 新增字段
+ * 修改字段
  * @author 作者：杨文培 
  * @version 创建时间：Jul 15, 2017 8:41:21 PM  
  */
 
-public class CallNewFieldWorkServiceImpl implements CallWorkService{
+public class CallAlertFieldWorkServiceImpl implements CallWorkService{
 	@Resource
 	private CreatFileService creatFileService;
 	@Resource
@@ -47,7 +47,7 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 	@Resource
 	private BuildPatchService buildPatchService;
 	private File outFile;
-	private String dir = "add-field";
+	private String dir = "alert-field";
 	private String pFix = dir+".sql";
 	private String fix = "脚本"+File.separator+dir;
 	@Override
@@ -55,7 +55,7 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 		List<Table> lTables = buildTableService.getLtables();
 		for (int i = 0; i < lTables.size(); i++) {
 			Table table = lTables.get(i);
-			if(OpTypeTableEnum.NEW_FIELD_2.getText().equals(table.getOpType())){
+			if(OpTypeTableEnum.Alert_Filed_4.getText().equals(table.getOpType())){
 				creatFileService.createOutFileDirectory(fix);//创建脚本文件
 				wirteTable(table);
 				buildPatchService.buildPatch("@"+dir+File.separator+table.getTableName()+"-"+pFix+";\r\n");
@@ -72,8 +72,8 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 		this.scanFileService = scanFileService;
 	}
 	private void wirteTable(Table table){
-		File templateFile = new File(System.getProperty("user.dir")+"/template/table/addField.xml");
-		this.outFile = new File(Setting.scriptPath+File.separator+fix+File.separator+table.getTableName()+"-add-field"+".sql");
+		File templateFile = new File(System.getProperty("user.dir")+"/template/table/alertField.xml");
+		this.outFile = new File(Setting.scriptPath+File.separator+fix+File.separator+table.getTableName()+"-alert-field"+".sql");
 		Stack<String> stack = new Stack<>();
 		StringBuilder builder = null;
 		BFileUtil.clearFile(outFile);//清空文件内容
@@ -98,7 +98,7 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 				}
 				if (MatcherUtil.isEnd(strLine)) {// 判断结束标签
 					stack.pop();
-					if("isField".equals(top)||"addField".equals(top)){
+					if("isField".equals(top)||"alertField".equals(top)){
 						String strLineBf = writeField(table,builder.toString());
 						if("isField".equals(top)){
 							strLineBf=StringUtil.replaSubFix(strLineBf.trim());
@@ -133,30 +133,66 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 	private String writeField(Table table,String tempLine){
 		Map<String, Field> fieldMap = table.getFieldMap();//有序map
 		StringBuilder builder = new StringBuilder();
-		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("field"), ","));
+		List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("fieldAlert"), ","));
 		for (Map.Entry<String, Field> entry : fieldMap.entrySet()) {
 			String tempStr = new String(tempLine);
 			//String key =  entry.getKey();
 			Field field = entry.getValue();
 			//System.out.println("field:"+field);
-			Map<String, String> map = getFieldMap(field,table);
+			Map<String, String> map = getFieldAlertMap(field,table);
+			String isNULL = null;//是否有isNull
+			String fielName = null;
 			for(int i=0;i<lRegexs.size();i++){
 				String regex = lRegexs.get(i);
 				Pattern pattern = Pattern.compile(regex);
 				Matcher matcher = pattern.matcher(tempLine);
 				while(matcher.find()){
 					String regStr = matcher.group();//匹配到的字符串
+					String valueReg = map.get(regStr);
 					//System.out.println("regStr:"+regStr);
-					tempStr = tempStr.replaceAll(regex, map.get(regStr));
+					//System.out.println("valueReg:"+valueReg);
+					tempStr = tempStr.replaceAll(regex,valueReg );
+					if("NULL".equalsIgnoreCase(valueReg)||"NOT NULL".equalsIgnoreCase(valueReg)){//
+						isNULL = valueReg;
+					}
 				}
+			}
+			if(isNULL != null){
+				fielName = field.getName();
+				tempStr = getAppendNull(tempStr, table, field);
 			}
 			builder.append(tempStr);
 	    }
 		return builder.toString();
 	}
+	private String getAppendNull(String tempStr,Table table,Field field){
+		File templateFile = new File(System.getProperty("user.dir")+"/template/table/isNull.xml");
+		try {
+			String appendStr = FileUtils.readFileToString(templateFile);
+			List<String> lRegexs = ParmUtil.getRegexs(StringUtil.splitToList(PropUtil.properties.getProperty("isN"), ","));
+			Map<String, String> map = getIsNullFieldMap(field,table);
+			for(int i=0;i<lRegexs.size();i++){
+				String regex = lRegexs.get(i);
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(appendStr);
+				while(matcher.find()){
+					String regStr = matcher.group();//匹配到的字符串
+					String valueReg = map.get(regStr);
+					//System.out.println("regStrIsN:"+regStr);
+					//System.out.println("valueRegIsN:"+valueReg);
+					appendStr = appendStr.replaceAll(regex,valueReg );
+				}
+			}
+			tempStr = appendStr+"\r\n"+tempStr+"         end if;"+"\r\n";
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return tempStr;
+	}
 	private Map<String, String> getTableMap(Table table){
 		Map<String, String> map = new HashMap<>();
 		map.put("${tableName}", table.getTableName());
+		map.put("${fieldSize}", String.valueOf(table.getFieldMap().size()));
 		return map;
 	}
 	private Map<String, String> getFieldMap(Field field,Table table){
@@ -165,8 +201,26 @@ public class CallNewFieldWorkServiceImpl implements CallWorkService{
 		map.put("${type}", StringUtil.getFieldType(field.getType()));
 		map.put("${comment}", field.getComment());
 		map.put("${tableName}", table.getTableName());
-		map.put("${isNull}", StringUtil.getFieldIsNull(field.getIsNull()));
+		map.put("${isNull}", StringUtil.getAlertFieldIsNull(field.getIsNull()));
 		map.put("${extAttr}", StringUtil.getFieldExtAttr(field.getExtAttr()));
+		return map;
+	}
+	private Map<String, String> getFieldAlertMap(Field field,Table table){
+		Map<String, String> map = new HashMap<>();
+		map.put("${field}", field.getTab());
+		map.put("${type}", StringUtil.getFieldType(field.getType()));
+		map.put("${comment}", field.getComment());
+		map.put("${tableName}", table.getTableName());
+		map.put("${isNull}", StringUtil.getAlertFieldIsNull(field.getIsNull()));
+		map.put("${extAttr}", StringUtil.getFieldExtAttr(field.getExtAttr()));
+		map.put("${fieldSize}", String.valueOf(table.getFieldMap().size()));
+		return map;
+	}
+	private Map<String, String> getIsNullFieldMap(Field field,Table table){
+		Map<String, String> map = new HashMap<>();
+		map.put("${field}", field.getTab());
+		map.put("${tableName}", table.getTableName());
+		map.put("${isN}", StringUtil.getAlertFieldIsN(field.getIsNull()));
 		return map;
 	}
 	public BuildTableService getBuildTableService() {

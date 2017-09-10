@@ -2,6 +2,7 @@ package com.iceberg.buildFile.util;
 
 import com.iceberg.buildFile.entity.Fdlk;
 import com.iceberg.buildFile.entity.Field;
+import com.iceberg.buildFile.main.Setting;
 
 /**
  * <p>Title: </p>
@@ -18,6 +19,7 @@ import com.iceberg.buildFile.entity.Field;
 
 public class CastUtil {
 	public static Fdlk FieldToFdlk(Field field){
+		field.setType(StringUtil.fullFieldType_FDLK(field.getType()));
 		Fdlk fdlk = new Fdlk();
 		fdlk.setField(field.getTab());
 		fdlk.setType(getFdlkType(field.getType()));
@@ -32,7 +34,7 @@ public class CastUtil {
 		}
 		String first = type.substring(0,1);
 		if("D".equalsIgnoreCase(first)){
-			return "yyyy-MM-dd";
+			return Setting.Dateformat;
 		}
 		return null;
 	}
@@ -51,17 +53,17 @@ public class CastUtil {
 			return pfix;
 		}else if("N".equalsIgnoreCase(first)){
 			if("".equalsIgnoreCase(pfix)){
-				return "32";
+				return Setting.IntegerLength;
 			}else{
-				return "32.5";//integer
+				return pfix;//integer
 			}
 		}else if("I".equalsIgnoreCase(first)){
-			return null;
+			return Setting.IntegerLength;
 		}
 		return "";
 	}
 	private static String getRequired(String type){
-		if("Y".equalsIgnoreCase(type)){
+		if("Y".equalsIgnoreCase(type)||StringUtil.isEmpty(type)){
 			return "false";
 		}else{
 			return "true";

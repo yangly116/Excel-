@@ -1,0 +1,6 @@
+        select count(0) into cnt 
+        from user_tab_columns 
+        where table_name = upper('${tableName}')
+        and column_name = upper('${field}')
+        and NULLABLE = UPPER('${isN}');
+       if cnt = 1 then 

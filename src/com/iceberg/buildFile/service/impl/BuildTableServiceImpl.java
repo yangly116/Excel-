@@ -11,6 +11,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
 
 import com.iceberg.buildFile.entity.Field;
@@ -29,6 +31,7 @@ import com.iceberg.buildFile.util.StringUtil;
  */
 @Service("BuildTableService")
 public class BuildTableServiceImpl implements BuildTableService {
+	private Log log = LogFactory.getLog(BuildTableServiceImpl.class);
 	@Resource
 	private ScanFileService scanFileService;
 	@Resource
@@ -52,10 +55,10 @@ public class BuildTableServiceImpl implements BuildTableService {
 			e.printStackTrace();
 		}finally{
 			if(lTables.size()==0){
-				Setting.showMS="未扫描到Excel模板文件!";
-				System.out.println("本次扫描的目录为："+Setting.scanfFilePath);
+				Setting.setShowMS("未扫描到Excel模板文件!");
+				log.info("本次扫描的目录为："+Setting.scanfFilePath);
 			}else{
-				Setting.showMS="本次扫描到 "+lTables.size()+" 个Excel模板文件!";
+				Setting.setShowMS("本次扫描到 "+lTables.size()+" 个Excel模板文件!");
 			}
 		}
 		return lTables;
@@ -75,6 +78,14 @@ public class BuildTableServiceImpl implements BuildTableService {
 			List<List<String>> lists = lListDatas.get(i);//获取页签
 			for(int j=0;j<lists.size();j++){//row行
 				List<String> lStrings = lists.get(j);
+				if(lStrings.size()==0){//如果为空跳出本次循环
+					continue;
+				}
+				if (lStrings.size()>=2) {
+					if(StringUtil.isEmpty(lStrings.get(1))){//如果为字段名空跳出本次循环
+						continue;
+					}
+				}
 				if(j==0){//读取表头行
 					fillTableHead(table,lStrings);
 				}
